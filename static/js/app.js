@@ -1316,12 +1316,9 @@
       `;
 
       const certsBlock = certs.length ? `
-        <div class="mt-2">
-          <div class="text-[11px] font-semibold text-gray-700 mb-1">Competitions &amp; Certifications</div>
-          <ul class="text-xs text-gray-700 space-y-1 list-disc list-inside">
-            ${certs.map(cert => `<li>${escapeHTML(cert)}</li>`).join("")}
-          </ul>
-        </div>
+        <ul class="mt-1 text-xs text-gray-700 list-disc list-inside leading-snug">
+          ${certs.map(cert => `<li>${escapeHTML(cert)}</li>`).join("")}
+        </ul>
       ` : "";
 
       return [
