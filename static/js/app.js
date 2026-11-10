@@ -1324,7 +1324,6 @@
 
     function formatBulletContent(text) {
       const raw = String(text || "");
-      const labels = ["Task", "Action", "Result"];
       const pattern = /\b(Task|Action|Result):\s*/g;
       const parts = [];
       let match;
@@ -1343,12 +1342,21 @@
 
       if (lastLabel !== null) {
         parts.push({ label: lastLabel, content: raw.slice(lastIndex).trim() });
+        const accent = (resumeData && resumeData.styling && resumeData.styling.accentColor) || "#0f766e";
+        const labelStyles = {
+          Task: "text-slate-500",
+          Action: "text-gray-900",
+          Result: "text-emerald-700"
+        };
         return parts
           .filter(part => part.content || part.label)
           .map((part, idx) => {
-            const prefix = part.label ? `<span class="font-semibold text-gray-800">${escapeHTML(part.label)}:</span> ` : "";
-            const br = idx > 0 ? "<br>" : "";
-            return `${br}${prefix}<span>${escapeHTML(part.content)}</span>`;
+            if (!part.label) {
+              return `<span class="${idx > 0 ? "block mt-0.5" : "block"} text-gray-700">${escapeHTML(part.content)}</span>`;
+            }
+            const labelClass = labelStyles[part.label] || "text-gray-800";
+            const labelStyle = part.label === "Action" ? ` style="color:${accent}"` : "";
+            return `<span class="${idx > 0 ? "block mt-0.5" : "block"} leading-relaxed"><span class="font-semibold ${labelClass}"${labelStyle}>${escapeHTML(part.label)}:</span> <span class="text-gray-700">${escapeHTML(part.content)}</span></span>`;
           })
           .join("");
       }
