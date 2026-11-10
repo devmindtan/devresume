@@ -1302,29 +1302,31 @@
       const p = resumeData.profile;
       const certs = (p.certifications || "").split("\n").filter(cert => cert.trim().length > 0);
 
-      const educationBlock = `
-        <div class="space-y-0.5">
-          <div class="flex justify-between items-baseline text-xs font-semibold text-gray-900 gap-2">
-            <span>${escapeHTML(p.eduDegree || "")}</span>
-            <span class="text-[11px] font-mono text-gray-500 font-normal shrink-0">${escapeHTML(p.eduTime || "")}</span>
-          </div>
-          <div class="flex justify-between items-center text-xs text-gray-600 gap-2">
-            <span>${escapeHTML(p.eduSchool || "")}</span>
-            ${p.eduGpa ? `<span class="text-[11px] font-mono text-emerald-700 bg-emerald-50 px-1 rounded shrink-0">${escapeHTML(p.eduGpa)}</span>` : ""}
-          </div>
-        </div>
-      `;
-
-      const certsBlock = certs.length ? `
-        <ul class="mt-1 text-xs text-gray-700 list-disc list-inside leading-snug">
-          ${certs.map(cert => `<li>${escapeHTML(cert)}</li>`).join("")}
-        </ul>
-      ` : "";
-
       return [
         chunk(sectionHeadingHTML(sec), sec, "heading", `heading-${sec.id}`, density.heading, true),
         chunk(
-          `<div>${educationBlock}${certsBlock}</div>`,
+          `
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-2">
+              <div class="space-y-0.5">
+                <div class="flex justify-between items-baseline text-xs font-semibold text-gray-900 gap-2">
+                  <span>${escapeHTML(p.eduDegree || "")}</span>
+                  <span class="text-[11px] font-mono text-gray-500 font-normal shrink-0">${escapeHTML(p.eduTime || "")}</span>
+                </div>
+                <div class="flex justify-between items-center text-xs text-gray-600 gap-2">
+                  <span>${escapeHTML(p.eduSchool || "")}</span>
+                  ${p.eduGpa ? `<span class="text-[11px] font-mono text-emerald-700 bg-emerald-50 px-1 rounded shrink-0">${escapeHTML(p.eduGpa)}</span>` : ""}
+                </div>
+              </div>
+
+              ${certs.length ? `
+              <div>
+                <ul class="text-xs text-gray-700 list-disc list-inside leading-snug">
+                  ${certs.map(cert => `<li>${escapeHTML(cert)}</li>`).join("")}
+                </ul>
+              </div>
+              ` : ""}
+            </div>
+          `,
           sec,
           "content",
           `education-${sec.id}`,
