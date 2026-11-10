@@ -1022,7 +1022,7 @@
         <h2 class="section-title text-xs font-bold uppercase tracking-wider flex items-center justify-between" style="color: ${accent};">
           <span class="flex items-center gap-1.5">
             <i data-lucide="${sec.icon || "terminal"}" class="w-3.5 h-3.5 shrink-0"></i>
-            <span>${escapeHTML(sec.title)}${continued ? ' <span class="font-normal normal-case tracking-normal text-[10px] text-gray-400">(tiếp theo)</span>' : ""}</span>
+            <span>${escapeHTML(sec.title)}${continued ? ' <span class="font-normal normal-case tracking-normal text-[10px] text-gray-400">(continued)</span>' : ""}</span>
           </span>
           ${rightHTML}
         </h2>
@@ -1498,7 +1498,7 @@
 
             <div class="h-6 flex items-center justify-between text-[10px] font-mono text-gray-400 border-t border-gray-100 pt-1 mt-auto">
               <span class="truncate">${footerName}</span>
-              ${styling.showPageNumbers ? `<span class="font-semibold text-gray-500">Trang ${pageNumber} / ${totalPages}</span>` : ""}
+              ${styling.showPageNumbers ? `<span class="font-semibold text-gray-500">Page ${pageNumber} / ${totalPages}</span>` : ""}
             </div>
           </div>
         `;
@@ -1506,7 +1506,7 @@
 
       const badge = $("#page-count-badge");
       if (badge) {
-        badge.innerText = `${totalPages} Trang A4`;
+        badge.innerText = `${totalPages} Page${totalPages === 1 ? "" : "s"}`;
         badge.className = totalPages === 1
           ? "font-mono text-emerald-400 font-semibold bg-emerald-950/40 px-2 py-0.5 rounded border border-emerald-500/30"
           : "font-mono text-amber-400 font-semibold bg-amber-950/40 px-2 py-0.5 rounded border border-amber-500/30";
