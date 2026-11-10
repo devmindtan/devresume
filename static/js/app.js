@@ -1284,7 +1284,7 @@
             <span class="text-[10px] font-mono bg-slate-100 text-slate-700 px-1.5 py-0.2 rounded">
               ${escapeHTML(tech)}
             </span>
-          `).join("")}
+          `).join('<span class="sr-only">, </span>')}
         </div>
       `;
     }
