@@ -209,17 +209,28 @@
       }
 
       if (Array.isArray(raw.experiences)) {
-        data.experiences = raw.experiences.map((exp, idx) => ({
-          id: exp.id || `exp-${idx}`,
-          enabled: exp.enabled !== false,
-          company: exp.company || "",
-          role: exp.role || "",
-          time: exp.time || "",
-          location: exp.location || "",
-          bullets: Array.isArray(exp.bullets)
-            ? exp.bullets.map(String)
-            : String(exp.bullets || "").split("\n").filter(Boolean)
-        }));
+        data.experiences = raw.experiences.map((exp, idx) => {
+          const normalized = {
+            id: exp.id || `exp-${idx}`,
+            enabled: exp.enabled !== false,
+            company: exp.company || "",
+            role: exp.role || "",
+            time: exp.time || "",
+            timeFrom: exp.timeFrom || "",
+            timeTo: exp.timeTo || "",
+            location: exp.location || "",
+            bullets: Array.isArray(exp.bullets)
+              ? exp.bullets.map(String)
+              : String(exp.bullets || "").split("\n").filter(Boolean)
+          };
+          if ((!normalized.timeFrom || !normalized.timeTo) && normalized.time) {
+            const parts = String(normalized.time).split(/\s*[-–—]\s*/);
+            if (!normalized.timeFrom) normalized.timeFrom = (parts[0] || "").trim();
+            if (!normalized.timeTo) normalized.timeTo = (parts.slice(1).join(" - ") || "").trim();
+          }
+          normalized.time = formatExperienceTime(normalized.timeFrom, normalized.timeTo, normalized.time);
+          return normalized;
+        });
       }
 
       if (Array.isArray(raw.projects)) {
@@ -808,7 +819,10 @@
             </div>
 
             <div class="grid grid-cols-2 gap-3">
-              <input type="text" value="${escapeHTML(exp.time)}" oninput="updateExperienceField(${idx}, 'time', this.value)" placeholder="Thời gian (01/2022 - Hiện tại)..." class="bg-slate-950 border border-slate-800 rounded px-2.5 py-1.5 text-slate-200 outline-none focus:border-emerald-500">
+              <input type="text" value="${escapeHTML(exp.timeFrom || "")}" oninput="updateExperienceTime(${idx}, 'timeFrom', this.value)" placeholder="Thời gian từ (VD: 03/2025)" class="bg-slate-950 border border-slate-800 rounded px-2.5 py-1.5 text-slate-200 outline-none focus:border-emerald-500">
+              <input type="text" value="${escapeHTML(exp.timeTo || "")}" oninput="updateExperienceTime(${idx}, 'timeTo', this.value)" placeholder="Thời gian đến (VD: 06/2025 / Present)" class="bg-slate-950 border border-slate-800 rounded px-2.5 py-1.5 text-slate-200 outline-none focus:border-emerald-500">
+            </div>
+            <div class="grid grid-cols-1 gap-3">
               <input type="text" value="${escapeHTML(exp.location)}" oninput="updateExperienceField(${idx}, 'location', this.value)" placeholder="Địa điểm (TP.HCM / Remote)..." class="bg-slate-950 border border-slate-800 rounded px-2.5 py-1.5 text-slate-200 outline-none focus:border-emerald-500">
             </div>
 
@@ -834,6 +848,13 @@
       markChanged();
     }
 
+    function updateExperienceTime(idx, field, value) {
+      const exp = resumeData.experiences[idx];
+      exp[field] = value;
+      exp.time = formatExperienceTime(exp.timeFrom, exp.timeTo, exp.time);
+      markChanged();
+    }
+
     function updateExperienceBullets(idx, value) {
       resumeData.experiences[idx].bullets = value.split("\n").filter(line => line.trim().length > 0);
       markChanged();
@@ -845,11 +866,13 @@
         enabled: true,
         company: "Công ty Công nghệ Mới",
         role: "Software Developer",
-        time: "2023 - Hiện tại",
+        time: "01/2023 - Present",
+        timeFrom: "01/2023",
+        timeTo: "Present",
         location: "TP. Hồ Chí Minh",
         bullets: [
-          "Phát triển các module chức năng trọng yếu, phục vụ hơn 50,000 active users hàng tháng.",
-          "Phối hợp cùng Product Owner để phân tích yêu cầu kỹ thuật và chuyển đổi thành backlog stories."
+          "Nhiệm vụ: Phát triển các module chức năng trọng yếu theo yêu cầu sản phẩm. Hành động: Thiết kế và triển khai giải pháp, phối hợp với Product Owner và kiểm thử. Kết quả: Bàn giao tính năng ổn định, đáp ứng yêu cầu nghiệp vụ.",
+          "Nhiệm vụ: Cải thiện chất lượng và hiệu năng hệ thống. Hành động: Tối ưu mã nguồn, xử lý lỗi và bổ sung kiểm thử. Kết quả: Giảm lỗi phát sinh và nâng cao độ tin cậy khi vận hành."
         ]
       });
       renderExperienceConfig();
@@ -1193,7 +1216,17 @@
       return chunks;
     }
 
+    function formatExperienceTime(from, to, fallback = "") {
+      const f = (from || "").trim();
+      const t = (to || "").trim();
+      if (f && t) return `${f} - ${t}`;
+      if (f) return `${f} - Present`;
+      if (t) return t;
+      return fallback || "";
+    }
+
     function buildExperienceHeaderHTML(exp) {
+      const timeLabel = formatExperienceTime(exp.timeFrom, exp.timeTo, exp.time);
       return `
         <div class="flex justify-between items-baseline">
           <div class="flex items-center gap-2">
@@ -1201,7 +1234,7 @@
             <span class="text-gray-400 font-normal">|</span>
             <span class="font-semibold text-xs text-gray-800">${escapeHTML(exp.company)}</span>
           </div>
-          <span class="text-[11px] font-mono text-gray-500">${escapeHTML(exp.time)}</span>
+          <span class="text-[11px] font-mono text-gray-500">${escapeHTML(timeLabel)}</span>
         </div>
       `;
     }
