@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="vi" class="h-full">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DevResume Studio - CV Builder Chuẩn Dev & ATS</title>
+  <link rel="icon" href="data:,">
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Fonts: Inter & Monospace fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            mono: ['"JetBrains Mono"', 'monospace'],
+            fira: ['"Fira Code"', 'monospace'],
+            roboto: ['Roboto', 'sans-serif'],
+          },
+          colors: {
+            brand: {
+              50: '#f0fdf4',
+              100: '#dcfce7',
+              500: '#22c55e',
+              600: '#16a34a',
+              700: '#15803d',
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <link rel="stylesheet" href="/static/css/app.css">
+</head>
+<body class="bg-slate-900 text-slate-100 font-sans h-screen flex flex-col overflow-hidden select-none">
+
+  <!-- ================= TOP NAVBAR ================= -->
+  <header class="no-print h-14 bg-slate-950/80 backdrop-blur border-b border-slate-800 px-4 flex items-center justify-between shrink-0 z-30">
+    <div class="flex items-center gap-3">
+      <div class="w-8 h-8 rounded-lg bg-emerald-600 flex items-center justify-center font-mono font-bold text-white shadow-md shadow-emerald-500/30">
+        &lt;/&gt;
+      </div>
+      <div>
+        <h1 class="font-bold text-sm sm:text-base leading-tight tracking-wide flex items-center gap-2">
+          DevResume <span class="hidden sm:inline text-xs px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-400 font-mono border border-emerald-500/30 font-medium">Auto Multi-Page</span>
+        </h1>
+        <p class="text-[11px] text-slate-400 hidden sm:block">May Đo CV & Tự Động Phân Trang A4 Chuẩn ATS</p>
+      </div>
+    </div>
+
+    <!-- Actions toolbar -->
+    <div class="flex items-center gap-2">
+      <!-- Preset Select -->
+      <div class="relative hidden md:flex items-center gap-1.5 bg-slate-800/80 px-2.5 py-1.5 rounded-lg border border-slate-700/60 text-xs">
+        <i data-lucide="layers" class="w-3.5 h-3.5 text-emerald-400"></i>
+        <label for="presetSelect" class="text-slate-400 text-[11px] font-medium">Preset JD:</label>
+        <select id="presetSelect" onchange="switchTemplate(this.value)" class="bg-transparent text-slate-200 outline-none cursor-pointer font-medium hover:text-white">
+          <option value="" class="bg-slate-900">Đang tải...</option>
+        </select>
+      </div>
+
+      <!-- Add custom preset -->
+      <button onclick="createPresetFromCurrent()" title="Lưu CV hiện tại thành preset JD mới trong thư mục templates/" class="flex items-center gap-1 px-2.5 py-1.5 text-xs font-medium rounded-lg bg-emerald-700/30 hover:bg-emerald-700/50 text-emerald-300 border border-emerald-500/30 transition">
+        <i data-lucide="plus" class="w-3.5 h-3.5"></i>
+        <span class="hidden lg:inline">Thêm Preset JD</span>
+      </button>
+
+      <!-- Import / Export JSON -->
+      <button onclick="exportJSON()" title="Lưu cấu hình thành file JSON" class="flex items-center gap-1 px-2.5 py-1.5 text-xs font-medium rounded-lg bg-slate-800 hover:bg-slate-700 border border-slate-700 transition">
+        <i data-lucide="download" class="w-3.5 h-3.5 text-slate-300"></i>
+        <span class="hidden lg:inline">Xuất JSON</span>
+      </button>
+
+      <label title="Nạp cấu hình JSON đã lưu" class="flex items-center gap-1 px-2.5 py-1.5 text-xs font-medium rounded-lg bg-slate-800 hover:bg-slate-700 border border-slate-700 cursor-pointer transition">
+        <i data-lucide="upload" class="w-3.5 h-3.5 text-slate-300"></i>
+        <span class="hidden lg:inline">Nhập JSON</span>
+        <input type="file" id="importJsonInput" accept=".json" class="hidden" onchange="importJSON(event)">
+      </label>
+
+      <!-- Print / Export PDF -->
+      <button onclick="triggerPrint()" class="flex items-center gap-1.5 px-3.5 py-1.5 text-xs font-semibold rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white shadow-md shadow-emerald-600/30 transition active:scale-95 whitespace-nowrap">
+        <i data-lucide="printer" class="w-4 h-4"></i>
+        <span class="hidden sm:inline">In / Tải PDF</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- ================= MAIN WORKSPACE (2 PANELS) ================= -->
+  <main class="flex-1 flex flex-col md:flex-row overflow-hidden relative">
+
+    <!-- LEFT PANEL: CONFIGURATION & CONTENT TAILORING -->
+    <aside class="no-print w-full md:w-[480px] lg:w-[530px] bg-slate-950 border-r border-slate-800/80 flex flex-col shrink-0 select-text">
+      <!-- Section Tabs Navigation -->
+      <div class="flex items-center gap-1 border-b border-slate-800 px-3 py-2 bg-slate-900/60 overflow-x-auto text-xs font-medium scrollbar-none">
+        <button onclick="switchTab('profile')" id="tab-btn-profile" class="tab-btn active px-3 py-1.5 rounded-md flex items-center gap-1.5 text-emerald-400 bg-slate-800 font-semibold transition shrink-0">
+          <i data-lucide="user" class="w-3.5 h-3.5"></i> Hồ sơ
+        </button>
+        <button onclick="switchTab('sections')" id="tab-btn-sections" class="tab-btn px-3 py-1.5 rounded-md flex items-center gap-1.5 text-slate-400 hover:bg-slate-800 hover:text-slate-300 transition shrink-0">
+          <i data-lucide="heading" class="w-3.5 h-3.5"></i> Tiêu đề & Mục
+        </button>
+        <button onclick="switchTab('skills')" id="tab-btn-skills" class="tab-btn px-3 py-1.5 rounded-md flex items-center gap-1.5 text-slate-400 hover:bg-slate-800 hover:text-slate-300 transition shrink-0">
+          <i data-lucide="code" class="w-3.5 h-3.5"></i> Kỹ năng (JD)
+        </button>
+        <button onclick="switchTab('projects')" id="tab-btn-projects" class="tab-btn px-3 py-1.5 rounded-md flex items-center gap-1.5 text-slate-400 hover:bg-slate-800 hover:text-slate-300 transition shrink-0">
+          <i data-lucide="folder-git-2" class="w-3.5 h-3.5"></i> Dự án
+        </button>
+        <button onclick="switchTab('experience')" id="tab-btn-experience" class="tab-btn px-3 py-1.5 rounded-md flex items-center gap-1.5 text-slate-400 hover:bg-slate-800 hover:text-slate-300 transition shrink-0">
+          <i data-lucide="briefcase" class="w-3.5 h-3.5"></i> Kinh nghiệm
+        </button>
+        <button onclick="switchTab('layout')" id="tab-btn-layout" class="tab-btn px-3 py-1.5 rounded-md flex items-center gap-1.5 text-slate-400 hover:bg-slate-800 hover:text-slate-300 transition shrink-0">
+          <i data-lucide="palette" class="w-3.5 h-3.5"></i> Giao diện
+        </button>
+      </div>
+
+      <!-- Config Panels Container -->
+      <div class="flex-1 overflow-y-auto p-4 space-y-5 text-sm text-slate-200">
+
+        <!-- TAB 1: PROFILE & CONTACT -->
+        <div id="tab-panel-profile" class="tab-content space-y-4">
+          <div class="flex items-center justify-between pb-2 border-b border-slate-800">
+            <h2 class="font-semibold text-slate-100 flex items-center gap-2">
+              <i data-lucide="user-check" class="w-4 h-4 text-emerald-400"></i> Thông tin cá nhân & Mục tiêu
+            </h2>
+            <span class="text-[11px] text-slate-400">Target Role Title</span>
+          </div>
+
+          <div class="grid grid-cols-2 gap-3">
+            <div class="col-span-2">
+              <label class="block text-xs text-slate-400 mb-1">Họ và tên *</label>
+              <input type="text" id="cfg-fullName" oninput="updateProfileField('fullName', this.value)" class="w-full bg-slate-900 border border-slate-700/80 rounded-lg px-3 py-2 text-sm focus:border-emerald-500 outline-none">
+            </div>
+            <div class="col-span-2">
+              <label class="block text-xs text-slate-400 mb-1">Chức danh ứng tuyển (Job Title Headline) *</label>
+              <input type="text" id="cfg-title" oninput="updateProfileField('title', this.value)" placeholder="Ví dụ: Senior Backend Engineer" class="w-full bg-slate-900 border border-slate-700/80 rounded-lg px-3 py-2 text-sm focus:border-emerald-500 outline-none">
+            </div>
+          </div>
+
+          <div class="grid grid-cols-2 gap-3">
+            <div>
+              <label class="block text-xs text-slate-400 mb-1">Email</label>
+              <input type="email" id="cfg-email" oninput="updateProfileField('email', this.value)" class="w-full bg-slate-900 border border-slate-700/80 rounded-lg px-3 py-2 text-sm focus:border-emerald-500 outline-none">
+            </div>
+            <div>
+              <label class="block text-xs text-slate-400 mb-1">Số điện thoại</label>
+              <input type="text" id="cfg-phone" oninput="updateProfileField('phone', this.value)" class="w-full bg-slate-900 border border-slate-700/80 rounded-lg px-3 py-2 text-sm focus:border-emerald-500 outline-none">
+            </div>
+            <div>
+              <label class="block text-xs text-slate-400 mb-1">GitHub / GitLab</label>
+              <input type="text" id="cfg-github" oninput="updateProfileField('github', this.value)" placeholder="github.com/username" class="w-full bg-slate-900 border border-slate-700/80 rounded-lg px-3 py-2 text-sm focus:border-emerald-500 outline-none">
+            </div>
+            <div>
+              <label class="block text-xs text-slate-400 mb-1">LinkedIn</label>
+              <input type="text" id="cfg-linkedin" oninput="updateProfileField('linkedin', this.value)" placeholder="linkedin.com/in/username" class="w-full bg-slate-900 border border-slate-700/80 rounded-lg px-3 py-2 text-sm focus:border-emerald-500 outline-none">
+            </div>
+            <div>
+              <label class="block text-xs text-slate-400 mb-1">Website / Portfolio</label>
+              <input type="text" id="cfg-portfolio" oninput="updateProfileField('portfolio', this.value)" placeholder="myportfolio.dev" class="w-full bg-slate-900 border border-slate-700/80 rounded-lg px-3 py-2 text-sm focus:border-emerald-500 outline-none">
+            </div>
+            <div>
+              <label class="block text-xs text-slate-400 mb-1">Địa điểm (City, Country)</label>
+              <input type="text" id="cfg-location" oninput="updateProfileField('location', this.value)" placeholder="TP. Hồ Chí Minh" class="w-full bg-slate-900 border border-slate-700/80 rounded-lg px-3 py-2 text-sm focus:border-emerald-500 outline-none">
+            </div>
+          </div>
+
+          <div>
+            <div class="flex items-center justify-between mb-1">
+              <label class="text-xs text-slate-400">Tóm tắt năng lực & Mục tiêu (Summary / Bio)</label>
+              <span class="text-[11px] text-slate-500">2 - 3 câu súc tích</span>
+            </div>
+            <textarea id="cfg-summary" rows="3" oninput="updateProfileField('summary', this.value)" class="w-full bg-slate-900 border border-slate-700/80 rounded-lg px-3 py-2 text-sm focus:border-emerald-500 outline-none resize-none leading-relaxed"></textarea>
+          </div>
+
+          <!-- Học vấn & Bằng cấp -->
+          <div class="pt-2 border-t border-slate-800">
+            <h3 class="font-medium text-xs text-slate-300 uppercase tracking-wider mb-2 flex items-center gap-1.5">
+              <i data-lucide="graduation-cap" class="w-3.5 h-3.5 text-emerald-400"></i> Học vấn & Chứng chỉ
+            </h3>
+            <div class="space-y-3">
+              <div class="grid grid-cols-2 gap-3">
+                <input type="text" id="cfg-eduDegree" oninput="updateProfileField('eduDegree', this.value)" placeholder="Ngành / Bằng cấp (Kỹ sư CNTT)" class="bg-slate-900 border border-slate-700/80 rounded-lg px-3 py-1.5 text-xs focus:border-emerald-500 outline-none">
+                <input type="text" id="cfg-eduSchool" oninput="updateProfileField('eduSchool', this.value)" placeholder="Trường ĐH / Tổ chức" class="bg-slate-900 border border-slate-700/80 rounded-lg px-3 py-1.5 text-xs focus:border-emerald-500 outline-none">
+              </div>
+              <div class="grid grid-cols-2 gap-3">
+                <input type="text" id="cfg-eduTime" oninput="updateProfileField('eduTime', this.value)" placeholder="Thời gian (2019 - 2023)" class="bg-slate-900 border border-slate-700/80 rounded-lg px-3 py-1.5 text-xs focus:border-emerald-500 outline-none">
+                <input type="text" id="cfg-eduGpa" oninput="updateProfileField('eduGpa', this.value)" placeholder="GPA hoặc Điểm nổi bật (3.6/4.0)" class="bg-slate-900 border border-slate-700/80 rounded-lg px-3 py-1.5 text-xs focus:border-emerald-500 outline-none">
+              </div>
+              <div>
+                <label class="block text-xs text-slate-400 mb-1">Chứng chỉ quốc tế (Mỗi dòng một chứng chỉ)</label>
+                <textarea id="cfg-certifications" rows="2" oninput="updateProfileField('certifications', this.value)" placeholder="AWS Certified Solutions Architect&#10;Kubernetes CKA" class="w-full bg-slate-900 border border-slate-700/80 rounded-lg px-3 py-1.5 text-xs focus:border-emerald-500 outline-none resize-none"></textarea>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- TAB 2: SECTION TITLES & ORDERING (NEW FEATURE) -->
+        <div id="tab-panel-sections" class="tab-content hidden space-y-4">
+          <div class="flex items-center justify-between pb-2 border-b border-slate-800">
+            <div>
+              <h2 class="font-semibold text-slate-100 flex items-center gap-2">
+                <i data-lucide="heading" class="w-4 h-4 text-emerald-400"></i> Cấu hình Tiêu đề & Thứ tự các mục
+              </h2>
+              <p class="text-[11px] text-slate-400 mt-0.5">Tùy biến tiêu đề (Anh/Việt) và sắp xếp thứ tự hiển thị</p>
+            </div>
+            <button onclick="resetSectionTitles()" class="text-xs text-slate-400 hover:text-white underline">
+              Đặt lại mặc định
+            </button>
+          </div>
+
+          <div id="section-titles-container" class="space-y-3">
+            <!-- Dynamic section config cards -->
+          </div>
+        </div>
+
+        <!-- TAB 3: SKILLS TAILORING (TICK TO MATCH JD) -->
+        <div id="tab-panel-skills" class="tab-content hidden space-y-4">
+          <div class="flex items-center justify-between pb-2 border-b border-slate-800">
+            <div>
+              <h2 class="font-semibold text-slate-100 flex items-center gap-2">
+                <i data-lucide="check-square" class="w-4 h-4 text-emerald-400"></i> May đo Kỹ Năng Theo JD
+              </h2>
+              <p class="text-[11px] text-slate-400 mt-0.5">Bật/tắt kỹ năng để phù hợp từ khoá hệ thống ATS của JD</p>
+            </div>
+            <button onclick="addSkillCategoryModal()" class="text-xs bg-emerald-700/30 hover:bg-emerald-700/50 text-emerald-400 border border-emerald-500/30 px-2.5 py-1 rounded-md flex items-center gap-1 transition">
+              <i data-lucide="plus" class="w-3 h-3"></i> Nhóm mới
+            </button>
+          </div>
+
+          <div id="skills-container" class="space-y-4">
+            <!-- Dynamic skills groups injected by JS -->
+          </div>
+        </div>
+
+        <!-- TAB 4: PROJECTS -->
+        <div id="tab-panel-projects" class="tab-content hidden space-y-4">
+          <div class="flex items-center justify-between pb-2 border-b border-slate-800">
+            <div>
+              <h2 class="font-semibold text-slate-100 flex items-center gap-2">
+                <i data-lucide="folder-code" class="w-4 h-4 text-emerald-400"></i> Dự án phần mềm
+              </h2>
+              <p class="text-[11px] text-slate-400 mt-0.5">Bật/tắt từng dự án theo nhu cầu của công ty ứng tuyển</p>
+            </div>
+            <button onclick="addNewProject()" class="text-xs bg-emerald-600 hover:bg-emerald-500 text-white font-medium px-3 py-1.5 rounded-lg flex items-center gap-1 shadow-sm transition">
+              <i data-lucide="plus-circle" class="w-3.5 h-3.5"></i> Thêm dự án
+            </button>
+          </div>
+
+          <div id="projects-container" class="space-y-3">
+            <!-- Render project cards -->
+          </div>
+        </div>
+
+        <!-- TAB 5: EXPERIENCE -->
+        <div id="tab-panel-experience" class="tab-content hidden space-y-4">
+          <div class="flex items-center justify-between pb-2 border-b border-slate-800">
+            <div>
+              <h2 class="font-semibold text-slate-100 flex items-center gap-2">
+                <i data-lucide="briefcase" class="w-4 h-4 text-emerald-400"></i> Kinh nghiệm làm việc
+              </h2>
+              <p class="text-[11px] text-slate-400 mt-0.5">Mô tả tác động kỹ thuật (Action verbs + Metrics)</p>
+            </div>
+            <button onclick="addNewExperience()" class="text-xs bg-emerald-600 hover:bg-emerald-500 text-white font-medium px-3 py-1.5 rounded-lg flex items-center gap-1 shadow-sm transition">
+              <i data-lucide="plus-circle" class="w-3.5 h-3.5"></i> Thêm kinh nghiệm
+            </button>
+          </div>
+
+          <div id="experience-container" class="space-y-3">
+            <!-- Render experience cards -->
+          </div>
+        </div>
+
+        <!-- TAB 6: LAYOUT & STYLING -->
+        <div id="tab-panel-layout" class="tab-content hidden space-y-4">
+          <div class="flex items-center justify-between pb-2 border-b border-slate-800">
+            <h2 class="font-semibold text-slate-100 flex items-center gap-2">
+              <i data-lucide="sliders" class="w-4 h-4 text-emerald-400"></i> Tùy biến Định dạng & Cỡ chữ
+            </h2>
+          </div>
+
+          <!-- Color Theme -->
+          <div>
+            <label class="block text-xs text-slate-400 mb-2">Màu điểm nhấn (Accent Color)</label>
+            <div class="flex items-center gap-2.5">
+              <button onclick="setAccentColor('#0f766e')" title="Teal Tech" class="w-7 h-7 rounded-full bg-[#0f766e] ring-2 ring-offset-2 ring-offset-slate-900 transition hover:scale-110"></button>
+              <button onclick="setAccentColor('#2563eb')" title="Blue Classic" class="w-7 h-7 rounded-full bg-[#2563eb] ring-2 ring-offset-2 ring-offset-slate-900 transition hover:scale-110"></button>
+              <button onclick="setAccentColor('#16a34a')" title="Emerald Green" class="w-7 h-7 rounded-full bg-[#16a34a] ring-2 ring-offset-2 ring-offset-slate-900 transition hover:scale-110"></button>
+              <button onclick="setAccentColor('#7c3aed')" title="Purple Modern" class="w-7 h-7 rounded-full bg-[#7c3aed] ring-2 ring-offset-2 ring-offset-slate-900 transition hover:scale-110"></button>
+              <button onclick="setAccentColor('#09090b')" title="Monochrome Slate" class="w-7 h-7 rounded-full bg-[#09090b] border border-slate-600 ring-2 ring-offset-2 ring-offset-slate-900 transition hover:scale-110"></button>
+              <input type="color" id="cfg-customColor" onchange="setAccentColor(this.value)" class="w-7 h-7 rounded-full cursor-pointer bg-transparent border-0">
+            </div>
+          </div>
+
+          <!-- Font Choice -->
+          <div>
+            <label class="block text-xs text-slate-400 mb-1.5">Phông chữ hiển thị</label>
+            <div class="grid grid-cols-2 gap-2">
+              <button onclick="setFontFamily('font-sans')" id="font-opt-sans" class="font-opt-btn active px-3 py-2 rounded-lg border border-slate-700 bg-slate-900 text-xs font-sans text-left flex items-center justify-between">
+                <span>Inter (Hiện đại)</span>
+                <i data-lucide="check" class="w-3 h-3 text-emerald-400"></i>
+              </button>
+              <button onclick="setFontFamily('font-mono')" id="font-opt-mono" class="font-opt-btn px-3 py-2 rounded-lg border border-slate-700 bg-slate-900 text-xs font-mono text-left flex items-center justify-between">
+                <span>JetBrains Mono</span>
+              </button>
+              <button onclick="setFontFamily('font-fira')" id="font-opt-fira" class="font-opt-btn px-3 py-2 rounded-lg border border-slate-700 bg-slate-900 text-xs font-fira text-left flex items-center justify-between">
+                <span>Fira Code</span>
+              </button>
+              <button onclick="setFontFamily('font-roboto')" id="font-opt-roboto" class="font-opt-btn px-3 py-2 rounded-lg border border-slate-700 bg-slate-900 text-xs font-roboto text-left flex items-center justify-between">
+                <span>Roboto Classic</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Spacing & Density -->
+          <div class="space-y-3 pt-2 border-t border-slate-800">
+            <div>
+              <div class="flex justify-between text-xs text-slate-400 mb-1">
+                <span>Mật độ co giãn (Line & Padding Density)</span>
+                <span id="density-label" class="text-emerald-400 font-mono">Tiêu chuẩn</span>
+              </div>
+              <div class="grid grid-cols-3 gap-2">
+                <button onclick="setDensity('compact', event)" data-density="compact" class="density-btn py-1.5 text-xs rounded border border-slate-700 bg-slate-900 hover:bg-slate-800">Rất gọn (Fit 1 page)</button>
+                <button onclick="setDensity('normal', event)" data-density="normal" class="density-btn active py-1.5 text-xs rounded border border-emerald-500 bg-emerald-950/40 text-emerald-300">Tiêu chuẩn</button>
+                <button onclick="setDensity('relaxed', event)" data-density="relaxed" class="density-btn py-1.5 text-xs rounded border border-slate-700 bg-slate-900 hover:bg-slate-800">Thoáng</button>
+              </div>
+            </div>
+
+            <!-- Toggles -->
+            <div class="space-y-2 pt-2">
+              <label class="flex items-center justify-between cursor-pointer text-xs p-2 rounded-lg bg-slate-900 border border-slate-800">
+                <span class="text-slate-300">Hiển thị đường phân cách kỹ thuật (Borders)</span>
+                <input type="checkbox" id="cfg-showSeparators" checked onchange="toggleSeparators(this.checked)" class="accent-emerald-500 w-4 h-4 rounded">
+              </label>
+
+              <label class="flex items-center justify-between cursor-pointer text-xs p-2 rounded-lg bg-slate-900 border border-slate-800">
+                <span class="text-slate-300">Định dạng Tags kỹ thuật nổi bật (Skill Pills)</span>
+                <input type="checkbox" id="cfg-pillTags" checked onchange="togglePillTags(this.checked)" class="accent-emerald-500 w-4 h-4 rounded">
+              </label>
+
+              <label class="flex items-center justify-between cursor-pointer text-xs p-2 rounded-lg bg-slate-900 border border-slate-800">
+                <span class="text-slate-300">Tự động hiển thị số trang (Page 1 of N)</span>
+                <input type="checkbox" id="cfg-showPageNumbers" checked onchange="togglePageNumbers(this.checked)" class="accent-emerald-500 w-4 h-4 rounded">
+              </label>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </aside>
+
+    <!-- RIGHT PANEL: A4 LIVE PREVIEW & AUTO MULTI-PAGE -->
+    <section class="flex-1 bg-slate-950/60 overflow-y-auto p-4 sm:p-6 lg:p-8 flex flex-col items-center print-container">
+      
+      <!-- Preview notice & Zoom tools -->
+      <div class="no-print w-full max-w-[210mm] mb-3 flex items-center justify-between text-xs text-slate-400">
+        <div class="flex items-center gap-2">
+          <span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-slate-800 text-slate-300 border border-slate-700/50">
+            <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span> Multi-Page A4 Preview
+          </span>
+          <span id="page-count-badge" class="font-mono text-emerald-400 font-semibold bg-emerald-950/40 px-2 py-0.5 rounded border border-emerald-500/30">1 Trang</span>
+        </div>
+
+        <div class="flex items-center gap-2">
+          <button onclick="zoomOut()" title="Thu nhỏ" class="p-1 rounded bg-slate-800 hover:bg-slate-700 text-slate-300 transition">
+            <i data-lucide="zoom-out" class="w-3.5 h-3.5"></i>
+          </button>
+          <span id="zoom-text" class="font-mono text-[11px] w-12 text-center text-slate-300">100%</span>
+          <button onclick="zoomIn()" title="Phóng to" class="p-1 rounded bg-slate-800 hover:bg-slate-700 text-slate-300 transition">
+            <i data-lucide="zoom-in" class="w-3.5 h-3.5"></i>
+          </button>
+          <button onclick="resetZoom()" title="Đặt lại zoom" class="px-2 py-1 rounded bg-slate-800 hover:bg-slate-700 text-[11px] text-slate-300 transition">
+            Fit
+          </button>
+        </div>
+      </div>
+
+      <!-- THE A4 RESUME WRAPPER (CONTAINING 1 OR MORE PAGES) -->
+      <div id="resume-sheet-wrapper" class="w-full flex flex-col items-center transition-transform duration-200 origin-top">
+        <div id="pages-container" class="w-full flex flex-col items-center">
+          <!-- Multi-page elements generated dynamically here -->
+        </div>
+      </div>
+
+      <!-- INVISIBLE MEASUREMENT DUMMY CONTAINER (CALCULATES HEIGHTS PRECISELY) -->
+      <div id="measure-container" class="fixed -left-[9999px] top-0 opacity-0 pointer-events-none" style="width: 210mm; box-sizing: border-box;"></div>
+
+    </section>
+  </main>
+
+  <!-- MODAL: ADD SKILL GROUP -->
+  <div id="skill-modal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+    <div class="bg-slate-900 border border-slate-700 rounded-xl p-5 w-full max-w-md shadow-2xl space-y-4">
+      <div class="flex justify-between items-center pb-2 border-b border-slate-800">
+        <h3 class="font-bold text-sm text-white">Thêm nhóm kỹ năng mới</h3>
+        <button onclick="closeSkillModal()" class="text-slate-400 hover:text-white">
+          <i data-lucide="x" class="w-4 h-4"></i>
+        </button>
+      </div>
+      <div>
+        <label class="block text-xs text-slate-400 mb-1">Tên nhóm kỹ năng (ví dụ: Mobile, Cloud/Security)</label>
+        <input type="text" id="modal-skill-category" placeholder="Tên nhóm..." class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white outline-none focus:border-emerald-500">
+      </div>
+      <div>
+        <label class="block text-xs text-slate-400 mb-1">Các kỹ năng (cách nhau bởi dấu phẩy)</label>
+        <textarea id="modal-skill-items" rows="3" placeholder="React Native, Flutter, Swift, Kotlin" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white outline-none focus:border-emerald-500 resize-none"></textarea>
+      </div>
+      <div class="flex justify-end gap-2 pt-2">
+        <button onclick="closeSkillModal()" class="px-3 py-1.5 rounded-lg text-xs font-medium text-slate-400 hover:bg-slate-800">Hủy</button>
+        <button onclick="saveNewSkillCategory()" class="px-4 py-1.5 rounded-lg text-xs font-semibold bg-emerald-600 hover:bg-emerald-500 text-white">Lưu nhóm</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOAST NOTIFICATION -->
+  <div id="toast" class="fixed bottom-4 right-4 z-50 transform translate-y-10 opacity-0 transition-all duration-300 pointer-events-none bg-slate-800 border border-slate-700 text-white text-xs px-4 py-2.5 rounded-lg shadow-xl flex items-center gap-2">
+    <i data-lucide="check-circle" class="w-4 h-4 text-emerald-400"></i>
+    <span id="toast-message">Đã cập nhật</span>
+  </div>
+
+  <!-- ================= JAVASCRIPT LOGIC ================= -->
+  <script src="/static/js/app.js"></script>
+</body>
+</html>

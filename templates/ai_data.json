@@ -1,0 +1,270 @@
+{
+  "profile": {
+    "fullName": "NGUYỄN VĂN AN",
+    "title": "AI / DATA PLATFORM ENGINEER",
+    "email": "an.nguyen@devmail.com",
+    "phone": "090 123 4567",
+    "github": "github.com/annguyen-dev",
+    "linkedin": "linkedin.com/in/annguyen",
+    "portfolio": "annguyen.dev",
+    "location": "TP. Hồ Chí Minh, Việt Nam",
+    "summary": "Kỹ sư phần mềm hơn 4 năm kinh nghiệm xây dựng hệ thống web phân tán tải cao, thành thạo TypeScript, Node.js, Go và hệ sinh thái React/Next.js. Có kinh nghiệm tối ưu hóa truy vấn Database, thiết kế kiến trúc Microservices và tự động hóa CI/CD pipeline trên AWS/Docker. Tư duy giải quyết vấn đề nhạy bén, cam kết viết code sạch, dễ bảo trì và tối ưu cho trải nghiệm người dùng cuối.",
+    "eduDegree": "Kỹ sư Khoa học Máy tính",
+    "eduSchool": "Đại học Bách Khoa TP.HCM",
+    "eduTime": "2018 - 2022",
+    "eduGpa": "GPA: 3.52 / 4.0",
+    "certifications": "AWS Certified Solutions Architect – Associate (2023)\nScrum Master PSM I (2022)"
+  },
+  "sections": [
+    {
+      "id": "summary",
+      "title": "TÓM TẮT NĂNG LỰC & MỤC TIÊU",
+      "enabled": true,
+      "icon": "terminal"
+    },
+    {
+      "id": "skills",
+      "title": "KỸ NĂNG KỸ THUẬT (TECHNICAL SKILLS)",
+      "enabled": true,
+      "icon": "cpu"
+    },
+    {
+      "id": "experience",
+      "title": "KINH NGHIỆM LÀM VIỆC (WORK EXPERIENCE)",
+      "enabled": true,
+      "icon": "layers"
+    },
+    {
+      "id": "projects",
+      "title": "DỰ ÁN TIÊU BIỂU (FEATURED PROJECTS)",
+      "enabled": true,
+      "icon": "folder-git"
+    },
+    {
+      "id": "education",
+      "title": "HỌC VẤN & CHỨNG CHỈ (EDUCATION & CERTS)",
+      "enabled": true,
+      "icon": "graduation-cap"
+    }
+  ],
+  "skills": [
+    {
+      "id": "languages",
+      "categoryName": "Ngôn ngữ lập trình",
+      "skills": [
+        {
+          "name": "TypeScript",
+          "enabled": false
+        },
+        {
+          "name": "JavaScript (ES6+)",
+          "enabled": false
+        },
+        {
+          "name": "Go (Golang)",
+          "enabled": true
+        },
+        {
+          "name": "Python",
+          "enabled": true
+        },
+        {
+          "name": "SQL",
+          "enabled": true
+        },
+        {
+          "name": "HTML5/CSS3",
+          "enabled": false
+        }
+      ]
+    },
+    {
+      "id": "frontend",
+      "categoryName": "Frontend & UI",
+      "skills": [
+        {
+          "name": "React.js",
+          "enabled": false
+        },
+        {
+          "name": "Next.js (App Router)",
+          "enabled": false
+        },
+        {
+          "name": "Tailwind CSS",
+          "enabled": false
+        },
+        {
+          "name": "Redux Toolkit",
+          "enabled": false
+        },
+        {
+          "name": "Vue.js",
+          "enabled": false
+        },
+        {
+          "name": "WebSockets",
+          "enabled": false
+        }
+      ]
+    },
+    {
+      "id": "backend",
+      "categoryName": "Backend & Cơ sở dữ liệu",
+      "skills": [
+        {
+          "name": "Node.js (NestJS / Express)",
+          "enabled": false
+        },
+        {
+          "name": "PostgreSQL",
+          "enabled": true
+        },
+        {
+          "name": "Redis Caching",
+          "enabled": true
+        },
+        {
+          "name": "MongoDB",
+          "enabled": false
+        },
+        {
+          "name": "RESTful API & GraphQL",
+          "enabled": false
+        },
+        {
+          "name": "Kafka Event Bus",
+          "enabled": true
+        }
+      ]
+    },
+    {
+      "id": "devops",
+      "categoryName": "DevOps, Cloud & Tools",
+      "skills": [
+        {
+          "name": "Docker & Compose",
+          "enabled": true
+        },
+        {
+          "name": "Kubernetes (K8s)",
+          "enabled": false
+        },
+        {
+          "name": "AWS (S3, EC2, Lambda, ECS)",
+          "enabled": false
+        },
+        {
+          "name": "CI/CD (GitHub Actions)",
+          "enabled": false
+        },
+        {
+          "name": "Linux / Bash scripting",
+          "enabled": true
+        },
+        {
+          "name": "Git flow / Trunk-based",
+          "enabled": false
+        }
+      ]
+    }
+  ],
+  "experiences": [
+    {
+      "id": "exp-1",
+      "enabled": true,
+      "company": "Nexus Financial Technologies",
+      "role": "Senior Fullstack Engineer",
+      "time": "06/2022 - Hiện tại",
+      "location": "TP.HCM",
+      "bullets": [
+        "Chủ trì thiết kế và triển khai kiến trúc cổng thanh toán đa kênh (Payment Gateway) phục vụ hơn 450,000 giao dịch/ngày, nâng tỷ lệ uptime đạt 99.98%.",
+        "Tái cấu trúc API nguyên khối (Monolith) sang kiến trúc Event-Driven Microservices với NestJS, Go và Kafka, giúp giảm thời gian phản hồi (P95 latency) từ 480ms xuống 110ms.",
+        "Xây dựng thư viện UI Component dùng chung bằng React & Tailwind CSS, tăng tốc độ phát triển tính năng mới cho 3 đội nhóm phát triển thêm 35%.",
+        "Thiết lập pipeline CI/CD với GitHub Actions và Docker ECS tự động kiểm thử tự động, giảm thời gian release bản dựng từ 40 phút xuống 8 phút."
+      ]
+    },
+    {
+      "id": "exp-2",
+      "enabled": true,
+      "company": "VinaTech Software Solution",
+      "role": "Software Engineer",
+      "time": "08/2020 - 05/2022",
+      "location": "TP.HCM",
+      "bullets": [
+        "Phát triển nền tảng quản trị phân phối B2B đa người dùng (Multi-tenant SaaS) bằng React, Next.js và PostgreSQL.",
+        "Tối ưu hóa các truy vấn SQL phức tạp và áp dụng Redis Cache tầng dịch vụ, giải quyết triệt để vấn đề nghẽn cổ chai cơ sở dữ liệu trong các giờ cao điểm bán hàng.",
+        "Tích hợp các cổng thanh toán (VNPay, MoMo, Stripe) và hệ thống hóa đơn điện tử tự động cho hơn 200 doanh nghiệp vừa và nhỏ."
+      ]
+    }
+  ],
+  "projects": [
+    {
+      "id": "proj-1",
+      "enabled": true,
+      "name": "CloudTelemetry - Realtime Log & Metrics Monitor",
+      "role": "Lead Developer",
+      "time": "2023",
+      "technologies": [
+        "Go",
+        "Next.js 14",
+        "TimescaleDB",
+        "Docker",
+        "gRPC"
+      ],
+      "link": "github.com/annguyen-dev/cloud-telemetry",
+      "bullets": [
+        "Hệ thống thu thập và phân tích log phân tán theo thời gian thực có khả năng xử lý 15,000 logs/giây thông qua giao thức gRPC.",
+        "Trực quan hóa đồ thị giám sát hiệu năng CPU/RAM với Next.js và WebSockets đạt độ trễ cập nhật < 50ms."
+      ]
+    },
+    {
+      "id": "proj-2",
+      "enabled": false,
+      "name": "DevHub Community Platform",
+      "role": "Fullstack Contributor",
+      "time": "2022 - 2023",
+      "technologies": [
+        "React",
+        "Node.js",
+        "PostgreSQL",
+        "Tailwind CSS",
+        "Redis"
+      ],
+      "link": "github.com/annguyen-dev/devhub-platform",
+      "bullets": [
+        "Nền tảng chia sẻ bài viết kỹ thuật & hỏi đáp lập trình với hệ thống chấm điểm reputation, full-text search và markdown editor trực quan.",
+        "Đạt 3,500+ active users hàng tháng và hơn 150 stars trên GitHub repository."
+      ]
+    },
+    {
+      "id": "proj-3",
+      "enabled": true,
+      "name": "AI Code Reviewer Bot (GitHub Action)",
+      "role": "Author",
+      "time": "2024",
+      "technologies": [
+        "TypeScript",
+        "OpenAI API",
+        "GitHub Octokit"
+      ],
+      "link": "github.com/annguyen-dev/ai-pr-reviewer",
+      "bullets": [
+        "Bot tự động phân tích Pull Request, phát hiện lỗ hổng bảo mật tiềm ẩn và gợi ý refactor code dựa trên LLM.",
+        "Được áp dụng tại nội bộ công ty giúp giảm 20% thời gian code review cho Senior Tech Lead."
+      ]
+    }
+  ],
+  "styling": {
+    "accentColor": "#0f766e",
+    "fontFamily": "font-sans",
+    "density": "normal",
+    "showSeparators": true,
+    "pillTags": true,
+    "showPageNumbers": true
+  },
+  "slug": "ai_data",
+  "name": "AI / Data Engineer",
+  "description": "AI/Data: Python, Go, SQL, Kafka, Redis và hạ tầng Docker.",
+  "order": 4
+}
