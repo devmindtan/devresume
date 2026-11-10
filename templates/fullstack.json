@@ -190,6 +190,33 @@
   ],
   "projects": [
     {
+      "id": "proj-1",
+      "enabled": true,
+      "name": "Smart City Traffic Flow Prediction & Decision Support System",
+      "role": "Fullstack",
+      "time": "02/2026 - 06/2026",
+      "teamType": "Individual Project",
+      "link": "github.com/devmindtan/KLTN_2026",
+      "technologies": [
+        "React",
+        "Vite",
+        "Node.js",
+        "Express",
+        "Python",
+        "PostgreSQL",
+        "MinIO",
+        "FIWARE Orion",
+        "Socket.io",
+        "Docker",
+        "Kubernetes"
+      ],
+      "bullets": [
+        "Built a capstone system for traffic flow prediction and decision support using a microservices architecture with a React/Vite frontend and Node.js/Express backend APIs.",
+        "Implemented real-time data pipelines integrating camera/image processing services, FIWARE Orion context broker, and Socket.io to deliver live traffic updates to the dashboard.",
+        "Developed backend services for forecasting, traffic data, reporting, and decision analysis with PostgreSQL and MinIO storage, and prepared Kubernetes manifests and cronjobs for deployment and automation."
+      ]
+    },
+    {
       "id": "proj-3",
       "enabled": true,
       "name": "Muscle Exercise Manager",
@@ -229,33 +256,6 @@
         "Built and configured a video production workspace with structured AI-agent workflows (AGENTS rules, reusable skills, project catalog/manager, and automation planning) to streamline content creation from planning to studio-ready assets.",
         "Designed channel/series/episode organization and local tooling to coordinate scripting, voice, assets, and Remotion compositions efficiently, supporting the YouTube channel https://www.youtube.com/@tamly.cuocsong.",
         "Focused on configuring AI-assisted workflows for effective, repeatable production while keeping the process local-first and cost-free."
-      ]
-    },
-    {
-      "id": "proj-1",
-      "enabled": true,
-      "name": "Smart City Traffic Flow Prediction & Decision Support System",
-      "role": "Fullstack",
-      "time": "02/2026 - 06/2026",
-      "teamType": "Individual Project",
-      "link": "github.com/devmindtan/KLTN_2026",
-      "technologies": [
-        "React",
-        "Vite",
-        "Node.js",
-        "Express",
-        "Python",
-        "PostgreSQL",
-        "MinIO",
-        "FIWARE Orion",
-        "Socket.IO",
-        "Docker",
-        "Kubernetes"
-      ],
-      "bullets": [
-        "Built a capstone system for traffic flow prediction and decision support using a microservices architecture with a React/Vite frontend and Node.js/Express backend APIs.",
-        "Implemented real-time data pipelines integrating camera/image processing services, FIWARE Orion context broker, and Socket.IO to deliver live traffic updates to the dashboard.",
-        "Developed backend services for forecasting, traffic data, reporting, and decision analysis with PostgreSQL and MinIO storage, and prepared Kubernetes manifests and cronjobs for deployment and automation."
       ]
     },
     {
