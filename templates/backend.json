@@ -1,48 +1,52 @@
 {
+  "slug": "backend",
+  "name": "Backend / DevOps",
+  "description": "Backend/DevOps: Go, Node.js, PostgreSQL, Kafka, Docker, AWS.",
+  "order": 2,
   "profile": {
-    "fullName": "NGUYỄN VĂN AN",
-    "title": "SENIOR BACKEND & DEVOPS ENGINEER",
+    "fullName": "NGUYEN VAN AN",
     "email": "an.nguyen@devmail.com",
     "phone": "090 123 4567",
     "github": "github.com/annguyen-dev",
     "linkedin": "linkedin.com/in/annguyen",
     "portfolio": "annguyen.dev",
-    "location": "TP. Hồ Chí Minh, Việt Nam",
-    "summary": "Kỹ sư phần mềm hơn 4 năm kinh nghiệm xây dựng hệ thống web phân tán tải cao, thành thạo TypeScript, Node.js, Go và hệ sinh thái React/Next.js. Có kinh nghiệm tối ưu hóa truy vấn Database, thiết kế kiến trúc Microservices và tự động hóa CI/CD pipeline trên AWS/Docker. Tư duy giải quyết vấn đề nhạy bén, cam kết viết code sạch, dễ bảo trì và tối ưu cho trải nghiệm người dùng cuối.",
-    "eduDegree": "Kỹ sư Khoa học Máy tính",
-    "eduSchool": "Đại học Bách Khoa TP.HCM",
+    "location": "Ho Chi Minh City, Vietnam",
+    "summary": "Software engineer with over 4 years of experience building high-traffic distributed web systems, proficient in TypeScript, Node.js, Go, and the React/Next.js ecosystem. Experienced in database query optimization, microservices architecture design, and CI/CD pipeline automation on AWS/Docker. Strong problem-solving mindset with a commitment to clean, maintainable code and optimized end-user experience.",
+    "eduDegree": "Bachelor of Computer Science",
+    "eduSchool": "Ho Chi Minh City University of Technology",
     "eduTime": "2018 - 2022",
     "eduGpa": "GPA: 3.52 / 4.0",
-    "certifications": "AWS Certified Solutions Architect – Associate (2023)\nScrum Master PSM I (2022)"
+    "certifications": "AWS Certified Solutions Architect – Associate (2023)\nProfessional Scrum Master I (PSM I) (2022)",
+    "title": "SENIOR BACKEND & DEVOPS ENGINEER"
   },
   "sections": [
     {
       "id": "summary",
-      "title": "TÓM TẮT NĂNG LỰC & MỤC TIÊU",
+      "title": "SUMMARY",
       "enabled": true,
       "icon": "terminal"
     },
     {
       "id": "skills",
-      "title": "KỸ NĂNG KỸ THUẬT (TECHNICAL SKILLS)",
+      "title": "TECHNOLOGY & EXPERIENCE",
       "enabled": true,
       "icon": "cpu"
     },
     {
       "id": "experience",
-      "title": "KINH NGHIỆM LÀM VIỆC (WORK EXPERIENCE)",
+      "title": "WORK EXPERIENCE",
       "enabled": true,
       "icon": "layers"
     },
     {
       "id": "projects",
-      "title": "DỰ ÁN TIÊU BIỂU (FEATURED PROJECTS)",
+      "title": "FEATURED PROJECTS",
       "enabled": true,
       "icon": "folder-git"
     },
     {
       "id": "education",
-      "title": "HỌC VẤN & CHỨNG CHỈ (EDUCATION & CERTS)",
+      "title": "EDUCATION & CERTIFICATIONS",
       "enabled": true,
       "icon": "graduation-cap"
     }
@@ -50,90 +54,52 @@
   "skills": [
     {
       "id": "languages",
-      "categoryName": "Ngôn ngữ lập trình",
+      "categoryName": "Programming Languages",
       "skills": [
         {
-          "name": "TypeScript",
-          "enabled": false
-        },
-        {
-          "name": "JavaScript (ES6+)",
-          "enabled": false
-        },
-        {
           "name": "Go (Golang)",
+          "description": "Built high-performance backend services and concurrent processing components for distributed systems.",
           "enabled": true
         },
         {
           "name": "Python",
+          "description": "Developed automation scripts, data processing tasks, and service utilities.",
           "enabled": true
         },
         {
           "name": "SQL",
+          "description": "Designed schemas, wrote complex queries, and optimized database performance.",
           "enabled": true
-        },
-        {
-          "name": "HTML5/CSS3",
-          "enabled": false
-        }
-      ]
-    },
-    {
-      "id": "frontend",
-      "categoryName": "Frontend & UI",
-      "skills": [
-        {
-          "name": "React.js",
-          "enabled": false
-        },
-        {
-          "name": "Next.js (App Router)",
-          "enabled": false
-        },
-        {
-          "name": "Tailwind CSS",
-          "enabled": false
-        },
-        {
-          "name": "Redux Toolkit",
-          "enabled": false
-        },
-        {
-          "name": "Vue.js",
-          "enabled": false
-        },
-        {
-          "name": "WebSockets",
-          "enabled": false
         }
       ]
     },
     {
       "id": "backend",
-      "categoryName": "Backend & Cơ sở dữ liệu",
+      "categoryName": "Backend & Databases",
       "skills": [
         {
           "name": "Node.js (NestJS / Express)",
+          "description": "Implemented scalable REST/GraphQL APIs and modular backend services.",
           "enabled": true
         },
         {
           "name": "PostgreSQL",
+          "description": "Managed relational data models, indexing, and query optimization for transactional workloads.",
           "enabled": true
         },
         {
-          "name": "Redis Caching",
+          "name": "Redis",
+          "description": "Applied caching strategies to reduce latency and offload database traffic.",
           "enabled": true
         },
         {
           "name": "MongoDB",
+          "description": "Worked with document-based storage for flexible application data.",
           "enabled": true
         },
         {
-          "name": "RESTful API & GraphQL",
-          "enabled": true
-        },
-        {
-          "name": "Kafka Event Bus",
+          "name": "Kafka",
+          "description": "Built event-driven communication between services for asynchronous processing.",
           "enabled": true
         }
       ]
@@ -143,27 +109,28 @@
       "categoryName": "DevOps, Cloud & Tools",
       "skills": [
         {
-          "name": "Docker & Compose",
+          "name": "Docker / Docker Compose",
+          "description": "Containerized applications and standardized local/production environments.",
           "enabled": true
         },
         {
-          "name": "Kubernetes (K8s)",
+          "name": "Kubernetes",
+          "description": "Deployed and managed containerized workloads with scalable orchestration.",
           "enabled": true
         },
         {
           "name": "AWS (S3, EC2, Lambda, ECS)",
+          "description": "Operated cloud infrastructure, storage, and compute services for backend systems.",
           "enabled": true
         },
         {
           "name": "CI/CD (GitHub Actions)",
+          "description": "Automated build, test, and deployment pipelines.",
           "enabled": true
         },
         {
-          "name": "Linux / Bash scripting",
-          "enabled": true
-        },
-        {
-          "name": "Git flow / Trunk-based",
+          "name": "Linux / Bash",
+          "description": "Administered environments and automated operational tasks with shell scripting.",
           "enabled": true
         }
       ]
@@ -175,13 +142,13 @@
       "enabled": true,
       "company": "Nexus Financial Technologies",
       "role": "Senior Fullstack Engineer",
-      "time": "06/2022 - Hiện tại",
-      "location": "TP.HCM",
+      "time": "06/2022 - Present",
+      "location": "Ho Chi Minh City",
       "bullets": [
-        "Chủ trì thiết kế và triển khai kiến trúc cổng thanh toán đa kênh (Payment Gateway) phục vụ hơn 450,000 giao dịch/ngày, nâng tỷ lệ uptime đạt 99.98%.",
-        "Tái cấu trúc API nguyên khối (Monolith) sang kiến trúc Event-Driven Microservices với NestJS, Go và Kafka, giúp giảm thời gian phản hồi (P95 latency) từ 480ms xuống 110ms.",
-        "Xây dựng thư viện UI Component dùng chung bằng React & Tailwind CSS, tăng tốc độ phát triển tính năng mới cho 3 đội nhóm phát triển thêm 35%.",
-        "Thiết lập pipeline CI/CD với GitHub Actions và Docker ECS tự động kiểm thử tự động, giảm thời gian release bản dựng từ 40 phút xuống 8 phút."
+        "Led the design and implementation of a multi-channel payment gateway architecture serving over 450,000 transactions per day, achieving 99.98% uptime.",
+        "Refactored a monolithic API into an event-driven microservices architecture using NestJS, Go, and Kafka, reducing P95 latency from 480ms to 110ms.",
+        "Built a shared UI component library with React and Tailwind CSS, accelerating new feature delivery for three development teams by 35%.",
+        "Established CI/CD pipelines with GitHub Actions and Docker on AWS ECS with automated testing, reducing release time from 40 minutes to 8 minutes."
       ]
     },
     {
@@ -190,11 +157,11 @@
       "company": "VinaTech Software Solution",
       "role": "Software Engineer",
       "time": "08/2020 - 05/2022",
-      "location": "TP.HCM",
+      "location": "Ho Chi Minh City",
       "bullets": [
-        "Phát triển nền tảng quản trị phân phối B2B đa người dùng (Multi-tenant SaaS) bằng React, Next.js và PostgreSQL.",
-        "Tối ưu hóa các truy vấn SQL phức tạp và áp dụng Redis Cache tầng dịch vụ, giải quyết triệt để vấn đề nghẽn cổ chai cơ sở dữ liệu trong các giờ cao điểm bán hàng.",
-        "Tích hợp các cổng thanh toán (VNPay, MoMo, Stripe) và hệ thống hóa đơn điện tử tự động cho hơn 200 doanh nghiệp vừa và nhỏ."
+        "Developed a multi-tenant B2B distribution management SaaS platform using React, Next.js, and PostgreSQL.",
+        "Optimized complex SQL queries and applied Redis caching at the service layer, resolving database bottlenecks during peak sales hours.",
+        "Integrated payment gateways (VNPay, MoMo, Stripe) and automated e-invoicing for more than 200 small and medium-sized businesses."
       ]
     }
   ],
@@ -216,7 +183,8 @@
       "bullets": [
         "Hệ thống thu thập và phân tích log phân tán theo thời gian thực có khả năng xử lý 15,000 logs/giây thông qua giao thức gRPC.",
         "Trực quan hóa đồ thị giám sát hiệu năng CPU/RAM với Next.js và WebSockets đạt độ trễ cập nhật < 50ms."
-      ]
+      ],
+      "teamType": "Team Project"
     },
     {
       "id": "proj-2",
@@ -235,7 +203,8 @@
       "bullets": [
         "Nền tảng chia sẻ bài viết kỹ thuật & hỏi đáp lập trình với hệ thống chấm điểm reputation, full-text search và markdown editor trực quan.",
         "Đạt 3,500+ active users hàng tháng và hơn 150 stars trên GitHub repository."
-      ]
+      ],
+      "teamType": "Team Project"
     },
     {
       "id": "proj-3",
@@ -252,7 +221,8 @@
       "bullets": [
         "Bot tự động phân tích Pull Request, phát hiện lỗ hổng bảo mật tiềm ẩn và gợi ý refactor code dựa trên LLM.",
         "Được áp dụng tại nội bộ công ty giúp giảm 20% thời gian code review cho Senior Tech Lead."
-      ]
+      ],
+      "teamType": "Team Project"
     }
   ],
   "styling": {
@@ -262,9 +232,5 @@
     "showSeparators": true,
     "pillTags": true,
     "showPageNumbers": true
-  },
-  "slug": "backend",
-  "name": "Backend / DevOps",
-  "description": "Backend/DevOps: Go, Node.js, PostgreSQL, Kafka, Docker, AWS.",
-  "order": 2
+  }
 }

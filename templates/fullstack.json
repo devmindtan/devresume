@@ -1,80 +1,85 @@
 {
+  "slug": "fullstack",
+  "name": "Fullstack Web Intern",
+  "description": "Fullstack web intern: React/Next.js, Node.js, Python, and end-to-end project experience.",
+  "order": 1,
   "profile": {
-    "fullName": "NGUYỄN VĂN AN",
-    "title": "SENIOR FULLSTACK DEVELOPER",
-    "email": "an.nguyen@devmail.com",
-    "phone": "090 123 4567",
-    "github": "github.com/annguyen-dev",
-    "linkedin": "linkedin.com/in/annguyen",
-    "portfolio": "annguyen.dev",
-    "location": "TP. Hồ Chí Minh, Việt Nam",
-    "summary": "Kỹ sư phần mềm hơn 4 năm kinh nghiệm xây dựng hệ thống web phân tán tải cao, thành thạo TypeScript, Node.js, Go và hệ sinh thái React/Next.js. Có kinh nghiệm tối ưu hóa truy vấn Database, thiết kế kiến trúc Microservices và tự động hóa CI/CD pipeline trên AWS/Docker. Tư duy giải quyết vấn đề nhạy bén, cam kết viết code sạch, dễ bảo trì và tối ưu cho trải nghiệm người dùng cuối.",
-    "eduDegree": "Kỹ sư Khoa học Máy tính",
-    "eduSchool": "Đại học Bách Khoa TP.HCM",
-    "eduTime": "2018 - 2022",
-    "eduGpa": "GPA: 3.52 / 4.0",
-    "certifications": "AWS Certified Solutions Architect – Associate (2023)\nScrum Master PSM I (2022)"
+    "fullName": "NGUYEN KHAC MINH TAN",
+    "title": "FULLSTACK DEVELOPER INTERN",
+    "email": "devmind.tan@gmail.com",
+    "phone": "0942510317",
+    "github": "github.com/devmindtan",
+    "linkedin": "",
+    "portfolio": "",
+    "location": "Thu Duc, Ho Chi Minh City, Vietnam",
+    "summary": "Fast-learning Software Engineering graduate specializing in full-stack web and mobile development. Experienced across the complete development lifecycle—from backend microservices to responsive frontends. Leverages AI models and modern developer tooling to optimize workflows, write comprehensive tests, and iterate rapidly without compromising code quality. Eager to bring strong fundamentals and high engineering velocity to a dynamic team.",
+    "eduDegree": "Bachelor of Software Engineering",
+    "eduSchool": "Van Lang University",
+    "eduTime": "2021 - 2025",
+    "eduGpa": "GPA: 3.0 / 4.0",
+    "certifications": "2025 ICPC Vietnam Southern Provincial Programming Contest\n2026 ICPC Vietnam National Programming Contest\n2025 Vietnam Open-Source Software Olympics"
   },
   "sections": [
     {
       "id": "summary",
-      "title": "TÓM TẮT NĂNG LỰC & MỤC TIÊU",
+      "title": "SUMMARY",
       "enabled": true,
       "icon": "terminal"
     },
     {
       "id": "skills",
-      "title": "KỸ NĂNG KỸ THUẬT (TECHNICAL SKILLS)",
+      "title": "TECHNOLOGY & EXPERIENCE",
       "enabled": true,
       "icon": "cpu"
     },
     {
+      "id": "education",
+      "title": "EDUCATION & CERTIFICATIONS",
+      "enabled": true,
+      "icon": "graduation-cap"
+    },
+    {
       "id": "experience",
-      "title": "KINH NGHIỆM LÀM VIỆC (WORK EXPERIENCE)",
+      "title": "WORK EXPERIENCE",
       "enabled": true,
       "icon": "layers"
     },
     {
       "id": "projects",
-      "title": "DỰ ÁN TIÊU BIỂU (FEATURED PROJECTS)",
+      "title": "FEATURED PROJECTS",
       "enabled": true,
       "icon": "folder-git"
-    },
-    {
-      "id": "education",
-      "title": "HỌC VẤN & CHỨNG CHỈ (EDUCATION & CERTS)",
-      "enabled": true,
-      "icon": "graduation-cap"
     }
   ],
   "skills": [
     {
       "id": "languages",
-      "categoryName": "Ngôn ngữ lập trình",
+      "categoryName": "Programming Languages",
       "skills": [
         {
-          "name": "TypeScript",
-          "enabled": true
-        },
-        {
-          "name": "JavaScript (ES6+)",
-          "enabled": true
-        },
-        {
-          "name": "Go (Golang)",
-          "enabled": true
-        },
-        {
           "name": "Python",
+          "description": "Researched blockchain and ML algorithms during TMAI internship; built a blockchain-based book management DApp; developed backend/data services for the Smart City traffic prediction system; and implemented local AI pipelines in Watch2Learn (transcription fallback, NLP, on-device translation).",
           "enabled": true
+        },
+        {
+          "name": "JavaScript / TypeScript",
+          "description": "Developed the React/Vite dashboard and Node.js/Express APIs for the Smart City capstone, built the offline-first Muscle Exercise Manager with Expo/TypeScript, and configured the Remotion/Node.js video production workspace (video-generated).",
+          "enabled": true
+        },
+        {
+          "name": "Java, C, C++, Dart",
+          "description": "Used as primary languages while assisting algorithm and programming courses as a Teaching Assistant at Van Lang University, guiding students through problem-solving and implementation.",
+          "enabled": false
         },
         {
           "name": "SQL",
-          "enabled": true
+          "description": "Wrote queries and worked with relational schemas for application data in PostgreSQL-backed services (Smart City project) and local/cloud app storage patterns.",
+          "enabled": false
         },
         {
-          "name": "HTML5/CSS3",
-          "enabled": true
+          "name": "HTML5 / CSS3",
+          "description": "Implemented responsive web UI layouts and styling for project dashboards and web interfaces.",
+          "enabled": false
         }
       ]
     },
@@ -83,87 +88,85 @@
       "categoryName": "Frontend & UI",
       "skills": [
         {
-          "name": "React.js",
+          "name": "React.js / Next.js / Vite",
+          "description": "Built the Smart City traffic monitoring and decision-support dashboard with React/Vite, integrating real-time updates and data views for forecasting, traffic, and reporting modules.",
           "enabled": true
         },
         {
-          "name": "Next.js (App Router)",
-          "enabled": true
+          "name": "React Native (Expo)",
+          "description": "Developed Muscle Exercise Manager, an offline-first workout app with weekly planning, focus mode logging, nutrition/body metrics, and Google sign-in.",
+          "enabled": false
         },
         {
           "name": "Tailwind CSS",
-          "enabled": true
+          "description": "Styled consistent, responsive interfaces and UI components across web projects.",
+          "enabled": false
         },
         {
-          "name": "Redux Toolkit",
-          "enabled": true
-        },
-        {
-          "name": "Vue.js",
-          "enabled": true
-        },
-        {
-          "name": "WebSockets",
-          "enabled": true
+          "name": "Remotion",
+          "description": "Configured and composed programmatic video scenes/assets in the video-generated workspace to support repeatable content production for the YouTube channel https://www.youtube.com/@tamly.cuocsong.",
+          "enabled": false
         }
       ]
     },
     {
       "id": "backend",
-      "categoryName": "Backend & Cơ sở dữ liệu",
+      "categoryName": "Backend, Data & AI",
       "skills": [
         {
-          "name": "Node.js (NestJS / Express)",
+          "name": "Node.js (Express)",
+          "description": "Implemented backend APIs and service logic for the Smart City system (auth, cameras, models, forecast, traffic, reports, decisions) and integrated with storage and microservices.",
           "enabled": true
         },
         {
-          "name": "PostgreSQL",
+          "name": "FastAPI",
+          "description": "Used to quickly build lightweight Python web APIs for data/AI-oriented features and rapid prototyping workflows.",
+          "enabled": false
+        },
+        {
+          "name": "PostgreSQL / SQLite / Supabase",
+          "description": "Used PostgreSQL and MinIO-backed workflows in the Smart City project; implemented local SQLite storage with Supabase cloud sync in Muscle Exercise Manager and Watch2Learn.",
           "enabled": true
         },
         {
-          "name": "Redis Caching",
-          "enabled": true
+          "name": "MinIO / FIWARE Orion / Socket.IO",
+          "description": "Integrated MinIO object storage, FIWARE Orion context broker, and Socket.IO real-time delivery in the Smart City pipeline (camera/image processing to live dashboard updates).",
+          "enabled": false
         },
         {
-          "name": "MongoDB",
-          "enabled": true
+          "name": "Local AI/ML Pipelines (Whisper, OPUS-MT, NLP)",
+          "description": "Configured Watch2Learn's local-first pipeline: subtitle-first ingestion, local transcription fallback, segmentation/pinyin/dictionary enrichment, and on-device translation without paid APIs.",
+          "enabled": false
         },
         {
-          "name": "RESTful API & GraphQL",
-          "enabled": true
-        },
-        {
-          "name": "Kafka Event Bus",
-          "enabled": true
+          "name": "Blockchain (DApp)",
+          "description": "Researched blockchain technologies at TMAI Saigon and developed a decentralized book management DApp; contributed to VERZIK's blockchain-based document verification concept and backend/containerized setup.",
+          "enabled": false
         }
       ]
     },
     {
       "id": "devops",
-      "categoryName": "DevOps, Cloud & Tools",
+      "categoryName": "DevOps & Tools",
       "skills": [
         {
-          "name": "Docker & Compose",
+          "name": "Docker / Docker Compose / Kubernetes",
+          "description": "Containerized services and prepared Docker Compose/Kubernetes manifests and cronjobs for the Smart City microservices system; used Docker Compose in VERZIK.",
           "enabled": true
         },
         {
-          "name": "Kubernetes (K8s)",
+          "name": "Git & GitHub",
+          "description": "Managed source code, project history, and collaboration across academic and personal repositories (KLTN_2026, VERZIK, muscle-exercise-manager, video-generated, watch2learn).",
           "enabled": true
         },
         {
-          "name": "AWS (S3, EC2, Lambda, ECS)",
-          "enabled": true
+          "name": "Linux / Bash",
+          "description": "Worked in Linux development environments and used shell tooling/scripts for local workflows, automation, and project operations.",
+          "enabled": false
         },
         {
-          "name": "CI/CD (GitHub Actions)",
-          "enabled": true
-        },
-        {
-          "name": "Linux / Bash scripting",
-          "enabled": true
-        },
-        {
-          "name": "Git flow / Trunk-based",
+          "name": "AI Agent & Workflow Configuration",
+          "description": "Designed structured AI-assisted workflows in video-generated and watch2learn (AGENTS rules, reusable skills, project catalog/manager, automation planning, quality checks) to make development and content production faster and more consistent.",
           "enabled": true
         }
       ]
@@ -173,98 +176,147 @@
     {
       "id": "exp-1",
       "enabled": true,
-      "company": "Nexus Financial Technologies",
-      "role": "Senior Fullstack Engineer",
-      "time": "06/2022 - Hiện tại",
-      "location": "TP.HCM",
+      "company": "TMAI Saigon",
+      "role": "Intern",
+      "time": "03/2025 - 06/2025",
+      "location": "Ho Chi Minh City",
       "bullets": [
-        "Chủ trì thiết kế và triển khai kiến trúc cổng thanh toán đa kênh (Payment Gateway) phục vụ hơn 450,000 giao dịch/ngày, nâng tỷ lệ uptime đạt 99.98%.",
-        "Tái cấu trúc API nguyên khối (Monolith) sang kiến trúc Event-Driven Microservices với NestJS, Go và Kafka, giúp giảm thời gian phản hồi (P95 latency) từ 480ms xuống 110ms.",
-        "Xây dựng thư viện UI Component dùng chung bằng React & Tailwind CSS, tăng tốc độ phát triển tính năng mới cho 3 đội nhóm phát triển thêm 35%.",
-        "Thiết lập pipeline CI/CD với GitHub Actions và Docker ECS tự động kiểm thử tự động, giảm thời gian release bản dựng từ 40 phút xuống 8 phút."
+        "Researched blockchain technologies and machine learning algorithms for practical application scenarios.",
+        "Developed a decentralized application (DApp) for book management using blockchain to support transparent and tamper-resistant record keeping."
       ]
     },
     {
       "id": "exp-2",
       "enabled": true,
-      "company": "VinaTech Software Solution",
-      "role": "Software Engineer",
-      "time": "08/2020 - 05/2022",
-      "location": "TP.HCM",
+      "company": "Van Lang University",
+      "role": "Teaching Assistant",
+      "time": "09/2025 - 04/2026",
+      "location": "Ho Chi Minh City",
       "bullets": [
-        "Phát triển nền tảng quản trị phân phối B2B đa người dùng (Multi-tenant SaaS) bằng React, Next.js và PostgreSQL.",
-        "Tối ưu hóa các truy vấn SQL phức tạp và áp dụng Redis Cache tầng dịch vụ, giải quyết triệt để vấn đề nghẽn cổ chai cơ sở dữ liệu trong các giờ cao điểm bán hàng.",
-        "Tích hợp các cổng thanh toán (VNPay, MoMo, Stripe) và hệ thống hóa đơn điện tử tự động cho hơn 200 doanh nghiệp vừa và nhỏ."
+        "Assisted instructors in teaching programming and algorithm courses using Java, C, C++, Python, and Dart.",
+        "Supported students with coding exercises, algorithm problem-solving, and implementation guidance during lab sessions."
       ]
     }
   ],
   "projects": [
     {
+      "id": "proj-3",
+      "enabled": true,
+      "name": "Muscle Exercise Manager",
+      "role": "Fullstack",
+      "time": "07/2026 - 08/2026",
+      "teamType": "Individual Project",
+      "link": "github.com/devmindtan/muscle-exercise-manager",
+      "technologies": [
+        "React Native",
+        "Expo",
+        "TypeScript",
+        "SQLite",
+        "Supabase",
+        "MinIO"
+      ],
+      "bullets": [
+        "Built an offline-first workout tracking application using React Native/Expo and TypeScript with local SQLite storage and automatic Supabase cloud synchronization.",
+        "Implemented features for weekly planning, workout logging, focus mode, nutrition/body metrics tracking, Google sign-in, and image uploads to MinIO."
+      ]
+    },
+    {
+      "id": "proj-4",
+      "enabled": true,
+      "name": "AI-Configured Video Production Workspace",
+      "role": "Fullstack",
+      "time": "11/2026 - Present",
+      "teamType": "Individual Project",
+      "link": "github.com/devmindtan/video-generated",
+      "technologies": [
+        "TypeScript",
+        "Remotion",
+        "Node.js",
+        "AI Agent Workflows",
+        "Automation Scripts"
+      ],
+      "bullets": [
+        "Built and configured a video production workspace with structured AI-agent workflows (AGENTS rules, reusable skills, project catalog/manager, and automation planning) to streamline content creation from planning to studio-ready assets.",
+        "Designed channel/series/episode organization and local tooling to coordinate scripting, voice, assets, and Remotion compositions efficiently, supporting the YouTube channel https://www.youtube.com/@tamly.cuocsong.",
+        "Focused on configuring AI-assisted workflows for effective, repeatable production while keeping the process local-first and cost-free."
+      ]
+    },
+    {
       "id": "proj-1",
       "enabled": true,
-      "name": "CloudTelemetry - Realtime Log & Metrics Monitor",
-      "role": "Lead Developer",
-      "time": "2023",
+      "name": "Smart City Traffic Flow Prediction & Decision Support System",
+      "role": "Fullstack",
+      "time": "02/2026 - 06/2026",
+      "teamType": "Individual Project",
+      "link": "github.com/devmindtan/KLTN_2026",
       "technologies": [
-        "Go",
-        "Next.js 14",
-        "TimescaleDB",
+        "React",
+        "Vite",
+        "Node.js",
+        "Express",
+        "Python",
+        "PostgreSQL",
+        "MinIO",
+        "FIWARE Orion",
+        "Socket.IO",
         "Docker",
-        "gRPC"
+        "Kubernetes"
       ],
-      "link": "github.com/annguyen-dev/cloud-telemetry",
       "bullets": [
-        "Hệ thống thu thập và phân tích log phân tán theo thời gian thực có khả năng xử lý 15,000 logs/giây thông qua giao thức gRPC.",
-        "Trực quan hóa đồ thị giám sát hiệu năng CPU/RAM với Next.js và WebSockets đạt độ trễ cập nhật < 50ms."
+        "Built a capstone system for traffic flow prediction and decision support using a microservices architecture with a React/Vite frontend and Node.js/Express backend APIs.",
+        "Implemented real-time data pipelines integrating camera/image processing services, FIWARE Orion context broker, and Socket.IO to deliver live traffic updates to the dashboard.",
+        "Developed backend services for forecasting, traffic data, reporting, and decision analysis with PostgreSQL and MinIO storage, and prepared Kubernetes manifests and cronjobs for deployment and automation."
+      ]
+    },
+    {
+      "id": "proj-5",
+      "enabled": true,
+      "name": "Watch2Learn - Local AI Video-to-Vocabulary Learning App",
+      "role": "Fullstack",
+      "time": "11/2026 - Present",
+      "teamType": "Individual Project",
+      "link": "github.com/devmindtan/watch2learn",
+      "technologies": [
+        "Python",
+        "FastAPI",
+        "SQLite",
+        "pnpm",
+        "Local NLP/ML",
+        "Whisper",
+        "OPUS-MT"
+      ],
+      "bullets": [
+        "Developed a local-first web app that turns permitted videos into timestamped vocabulary lessons, preferring subtitles and falling back to local transcription and NLP processing.",
+        "Configured an end-to-end local AI workflow (segmentation, pinyin, offline dictionaries, and on-device translation models) to generate contextual vocabulary with sentence replay without paid APIs.",
+        "Structured the project with clear workflows, agent/skill configurations, and quality checks to make AI-assisted development and feature iteration more effective."
       ]
     },
     {
       "id": "proj-2",
       "enabled": true,
-      "name": "DevHub Community Platform",
-      "role": "Fullstack Contributor",
-      "time": "2022 - 2023",
+      "name": "VERZIK - Decentralized Digital Document Verification",
+      "role": "Fullstack",
+      "time": "07/2026 - 8/2026",
+      "teamType": "Team Project",
+      "link": "github.com/devmindtan/VERZIK",
       "technologies": [
-        "React",
-        "Node.js",
-        "PostgreSQL",
-        "Tailwind CSS",
-        "Redis"
+        "Blockchain",
+        "Backend Services",
+        "Docker",
+        "Docker Compose"
       ],
-      "link": "github.com/annguyen-dev/devhub-platform",
       "bullets": [
-        "Nền tảng chia sẻ bài viết kỹ thuật & hỏi đáp lập trình với hệ thống chấm điểm reputation, full-text search và markdown editor trực quan.",
-        "Đạt 3,500+ active users hàng tháng và hơn 150 stars trên GitHub repository."
-      ]
-    },
-    {
-      "id": "proj-3",
-      "enabled": false,
-      "name": "AI Code Reviewer Bot (GitHub Action)",
-      "role": "Author",
-      "time": "2024",
-      "technologies": [
-        "TypeScript",
-        "OpenAI API",
-        "GitHub Octokit"
-      ],
-      "link": "github.com/annguyen-dev/ai-pr-reviewer",
-      "bullets": [
-        "Bot tự động phân tích Pull Request, phát hiện lỗ hổng bảo mật tiềm ẩn và gợi ý refactor code dựa trên LLM.",
-        "Được áp dụng tại nội bộ công ty giúp giảm 20% thời gian code review cho Senior Tech Lead."
+        "Developed a decentralized digital document verification system leveraging blockchain to ensure data integrity, prevent forgery, and provide transparent provenance without intermediaries.",
+        "Implemented backend components and configured a containerized development/runtime environment using Docker Compose for consistent deployment."
       ]
     }
   ],
   "styling": {
-    "accentColor": "#0f766e",
-    "fontFamily": "font-sans",
+    "accentColor": "#09090b",
+    "fontFamily": "font-roboto",
     "density": "normal",
     "showSeparators": true,
     "pillTags": true,
     "showPageNumbers": true
-  },
-  "slug": "fullstack",
-  "name": "Fullstack Web",
-  "description": "Senior fullstack: TypeScript, Node.js, Go, React/Next.js và CI/CD.",
-  "order": 1
+  }
 }

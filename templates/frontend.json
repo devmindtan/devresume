@@ -1,48 +1,52 @@
 {
+  "slug": "frontend",
+  "name": "Frontend / UI-UX",
+  "description": "Frontend: TypeScript, React/Next.js, Tailwind CSS, and UI components.",
+  "order": 3,
   "profile": {
-    "fullName": "NGUYỄN VĂN AN",
-    "title": "SENIOR FRONTEND / UI-UX ENGINEER",
+    "fullName": "NGUYEN VAN AN",
     "email": "an.nguyen@devmail.com",
     "phone": "090 123 4567",
     "github": "github.com/annguyen-dev",
     "linkedin": "linkedin.com/in/annguyen",
     "portfolio": "annguyen.dev",
-    "location": "TP. Hồ Chí Minh, Việt Nam",
-    "summary": "Kỹ sư phần mềm hơn 4 năm kinh nghiệm xây dựng hệ thống web phân tán tải cao, thành thạo TypeScript, Node.js, Go và hệ sinh thái React/Next.js. Có kinh nghiệm tối ưu hóa truy vấn Database, thiết kế kiến trúc Microservices và tự động hóa CI/CD pipeline trên AWS/Docker. Tư duy giải quyết vấn đề nhạy bén, cam kết viết code sạch, dễ bảo trì và tối ưu cho trải nghiệm người dùng cuối.",
-    "eduDegree": "Kỹ sư Khoa học Máy tính",
-    "eduSchool": "Đại học Bách Khoa TP.HCM",
+    "location": "Ho Chi Minh City, Vietnam",
+    "summary": "Software engineer with over 4 years of experience building high-traffic distributed web systems, proficient in TypeScript, Node.js, Go, and the React/Next.js ecosystem. Experienced in database query optimization, microservices architecture design, and CI/CD pipeline automation on AWS/Docker. Strong problem-solving mindset with a commitment to clean, maintainable code and optimized end-user experience.",
+    "eduDegree": "Bachelor of Computer Science",
+    "eduSchool": "Ho Chi Minh City University of Technology",
     "eduTime": "2018 - 2022",
     "eduGpa": "GPA: 3.52 / 4.0",
-    "certifications": "AWS Certified Solutions Architect – Associate (2023)\nScrum Master PSM I (2022)"
+    "certifications": "AWS Certified Solutions Architect – Associate (2023)\nProfessional Scrum Master I (PSM I) (2022)",
+    "title": "SENIOR FRONTEND / UI-UX ENGINEER"
   },
   "sections": [
     {
       "id": "summary",
-      "title": "TÓM TẮT NĂNG LỰC & MỤC TIÊU",
+      "title": "SUMMARY",
       "enabled": true,
       "icon": "terminal"
     },
     {
       "id": "skills",
-      "title": "KỸ NĂNG KỸ THUẬT (TECHNICAL SKILLS)",
+      "title": "TECHNOLOGY & EXPERIENCE",
       "enabled": true,
       "icon": "cpu"
     },
     {
       "id": "experience",
-      "title": "KINH NGHIỆM LÀM VIỆC (WORK EXPERIENCE)",
+      "title": "WORK EXPERIENCE",
       "enabled": true,
       "icon": "layers"
     },
     {
       "id": "projects",
-      "title": "DỰ ÁN TIÊU BIỂU (FEATURED PROJECTS)",
+      "title": "FEATURED PROJECTS",
       "enabled": true,
       "icon": "folder-git"
     },
     {
       "id": "education",
-      "title": "HỌC VẤN & CHỨNG CHỈ (EDUCATION & CERTS)",
+      "title": "EDUCATION & CERTIFICATIONS",
       "enabled": true,
       "icon": "graduation-cap"
     }
@@ -50,30 +54,16 @@
   "skills": [
     {
       "id": "languages",
-      "categoryName": "Ngôn ngữ lập trình",
+      "categoryName": "Programming Languages",
       "skills": [
         {
-          "name": "TypeScript",
+          "name": "TypeScript / JavaScript (ES6+)",
+          "description": "Developed type-safe, maintainable frontend application logic and UI interactions.",
           "enabled": true
         },
         {
-          "name": "JavaScript (ES6+)",
-          "enabled": true
-        },
-        {
-          "name": "Go (Golang)",
-          "enabled": false
-        },
-        {
-          "name": "Python",
-          "enabled": false
-        },
-        {
-          "name": "SQL",
-          "enabled": false
-        },
-        {
-          "name": "HTML5/CSS3",
+          "name": "HTML5 / CSS3",
+          "description": "Built semantic, responsive, and accessible user interfaces.",
           "enabled": true
         }
       ]
@@ -84,86 +74,54 @@
       "skills": [
         {
           "name": "React.js",
+          "description": "Created reusable component-based interfaces and managed application state.",
           "enabled": true
         },
         {
           "name": "Next.js (App Router)",
+          "description": "Built performant web applications with routing, rendering, and optimization features.",
           "enabled": true
         },
         {
           "name": "Tailwind CSS",
+          "description": "Implemented consistent, responsive designs with utility-first styling.",
           "enabled": true
         },
         {
           "name": "Redux Toolkit",
-          "enabled": true
-        },
-        {
-          "name": "Vue.js",
+          "description": "Managed complex client-side state in scalable frontend applications.",
           "enabled": true
         },
         {
           "name": "WebSockets",
+          "description": "Integrated real-time UI updates for live data experiences.",
           "enabled": true
         }
       ]
     },
     {
       "id": "backend",
-      "categoryName": "Backend & Cơ sở dữ liệu",
+      "categoryName": "Backend Integration",
       "skills": [
         {
-          "name": "Node.js (NestJS / Express)",
-          "enabled": false
-        },
-        {
-          "name": "PostgreSQL",
-          "enabled": false
-        },
-        {
-          "name": "Redis Caching",
-          "enabled": false
-        },
-        {
-          "name": "MongoDB",
-          "enabled": false
-        },
-        {
           "name": "RESTful API & GraphQL",
+          "description": "Integrated frontend applications with backend services and data sources.",
           "enabled": true
-        },
-        {
-          "name": "Kafka Event Bus",
-          "enabled": false
         }
       ]
     },
     {
       "id": "devops",
-      "categoryName": "DevOps, Cloud & Tools",
+      "categoryName": "Tools & Workflow",
       "skills": [
         {
-          "name": "Docker & Compose",
-          "enabled": false
-        },
-        {
-          "name": "Kubernetes (K8s)",
-          "enabled": false
-        },
-        {
-          "name": "AWS (S3, EC2, Lambda, ECS)",
-          "enabled": false
-        },
-        {
           "name": "CI/CD (GitHub Actions)",
+          "description": "Automated frontend build and quality checks in delivery pipelines.",
           "enabled": true
         },
         {
-          "name": "Linux / Bash scripting",
-          "enabled": false
-        },
-        {
           "name": "Git flow / Trunk-based",
+          "description": "Collaborated effectively using structured version-control workflows.",
           "enabled": true
         }
       ]
@@ -175,13 +133,13 @@
       "enabled": true,
       "company": "Nexus Financial Technologies",
       "role": "Senior Fullstack Engineer",
-      "time": "06/2022 - Hiện tại",
-      "location": "TP.HCM",
+      "time": "06/2022 - Present",
+      "location": "Ho Chi Minh City",
       "bullets": [
-        "Chủ trì thiết kế và triển khai kiến trúc cổng thanh toán đa kênh (Payment Gateway) phục vụ hơn 450,000 giao dịch/ngày, nâng tỷ lệ uptime đạt 99.98%.",
-        "Tái cấu trúc API nguyên khối (Monolith) sang kiến trúc Event-Driven Microservices với NestJS, Go và Kafka, giúp giảm thời gian phản hồi (P95 latency) từ 480ms xuống 110ms.",
-        "Xây dựng thư viện UI Component dùng chung bằng React & Tailwind CSS, tăng tốc độ phát triển tính năng mới cho 3 đội nhóm phát triển thêm 35%.",
-        "Thiết lập pipeline CI/CD với GitHub Actions và Docker ECS tự động kiểm thử tự động, giảm thời gian release bản dựng từ 40 phút xuống 8 phút."
+        "Led the design and implementation of a multi-channel payment gateway architecture serving over 450,000 transactions per day, achieving 99.98% uptime.",
+        "Refactored a monolithic API into an event-driven microservices architecture using NestJS, Go, and Kafka, reducing P95 latency from 480ms to 110ms.",
+        "Built a shared UI component library with React and Tailwind CSS, accelerating new feature delivery for three development teams by 35%.",
+        "Established CI/CD pipelines with GitHub Actions and Docker on AWS ECS with automated testing, reducing release time from 40 minutes to 8 minutes."
       ]
     },
     {
@@ -190,11 +148,11 @@
       "company": "VinaTech Software Solution",
       "role": "Software Engineer",
       "time": "08/2020 - 05/2022",
-      "location": "TP.HCM",
+      "location": "Ho Chi Minh City",
       "bullets": [
-        "Phát triển nền tảng quản trị phân phối B2B đa người dùng (Multi-tenant SaaS) bằng React, Next.js và PostgreSQL.",
-        "Tối ưu hóa các truy vấn SQL phức tạp và áp dụng Redis Cache tầng dịch vụ, giải quyết triệt để vấn đề nghẽn cổ chai cơ sở dữ liệu trong các giờ cao điểm bán hàng.",
-        "Tích hợp các cổng thanh toán (VNPay, MoMo, Stripe) và hệ thống hóa đơn điện tử tự động cho hơn 200 doanh nghiệp vừa và nhỏ."
+        "Developed a multi-tenant B2B distribution management SaaS platform using React, Next.js, and PostgreSQL.",
+        "Optimized complex SQL queries and applied Redis caching at the service layer, resolving database bottlenecks during peak sales hours.",
+        "Integrated payment gateways (VNPay, MoMo, Stripe) and automated e-invoicing for more than 200 small and medium-sized businesses."
       ]
     }
   ],
@@ -214,9 +172,10 @@
       ],
       "link": "github.com/annguyen-dev/cloud-telemetry",
       "bullets": [
-        "Hệ thống thu thập và phân tích log phân tán theo thời gian thực có khả năng xử lý 15,000 logs/giây thông qua giao thức gRPC.",
-        "Trực quan hóa đồ thị giám sát hiệu năng CPU/RAM với Next.js và WebSockets đạt độ trễ cập nhật < 50ms."
-      ]
+        "Built a distributed real-time log collection and analysis system capable of processing 15,000 logs/second via gRPC.",
+        "Visualized CPU/RAM performance metrics with Next.js and WebSockets, achieving update latency under 50ms."
+      ],
+      "teamType": "Team Project"
     },
     {
       "id": "proj-2",
@@ -233,9 +192,10 @@
       ],
       "link": "github.com/annguyen-dev/devhub-platform",
       "bullets": [
-        "Nền tảng chia sẻ bài viết kỹ thuật & hỏi đáp lập trình với hệ thống chấm điểm reputation, full-text search và markdown editor trực quan.",
-        "Đạt 3,500+ active users hàng tháng và hơn 150 stars trên GitHub repository."
-      ]
+        "Developed a technical knowledge-sharing and Q&A platform with a reputation system, full-text search, and an intuitive Markdown editor.",
+        "Reached 3,500+ monthly active users and over 150 stars on the GitHub repository."
+      ],
+      "teamType": "Team Project"
     },
     {
       "id": "proj-3",
@@ -250,9 +210,10 @@
       ],
       "link": "github.com/annguyen-dev/ai-pr-reviewer",
       "bullets": [
-        "Bot tự động phân tích Pull Request, phát hiện lỗ hổng bảo mật tiềm ẩn và gợi ý refactor code dựa trên LLM.",
-        "Được áp dụng tại nội bộ công ty giúp giảm 20% thời gian code review cho Senior Tech Lead."
-      ]
+        "Built a bot to automatically analyze pull requests, detect potential security vulnerabilities, and suggest code refactoring using LLMs.",
+        "Adopted internally to reduce code review time for senior tech leads by 20%."
+      ],
+      "teamType": "Team Project"
     }
   ],
   "styling": {
@@ -262,9 +223,5 @@
     "showSeparators": true,
     "pillTags": true,
     "showPageNumbers": true
-  },
-  "slug": "frontend",
-  "name": "Frontend / UI-UX",
-  "description": "Frontend: TypeScript, React/Next.js, Tailwind CSS và UI component.",
-  "order": 3
+  }
 }
