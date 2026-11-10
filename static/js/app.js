@@ -5,11 +5,11 @@
        ============================================================ */
 
     const DEFAULT_SECTIONS = [
-      { id: "summary", title: "TÓM TẮT NĂNG LỰC & MỤC TIÊU", enabled: true, icon: "terminal" },
-      { id: "skills", title: "KỸ NĂNG KỸ THUẬT (TECHNICAL SKILLS)", enabled: true, icon: "cpu" },
-      { id: "experience", title: "KINH NGHIỆM LÀM VIỆC (WORK EXPERIENCE)", enabled: true, icon: "layers" },
-      { id: "projects", title: "DỰ ÁN TIÊU BIỂU (FEATURED PROJECTS)", enabled: true, icon: "folder-git" },
-      { id: "education", title: "HỌC VẤN & CHỨNG CHỈ (EDUCATION & CERTS)", enabled: true, icon: "graduation-cap" }
+      { id: "summary", title: "SUMMARY", enabled: true, icon: "terminal" },
+      { id: "skills", title: "TECHNOLOGY & EXPERIENCE", enabled: true, icon: "cpu" },
+      { id: "experience", title: "WORK EXPERIENCE", enabled: true, icon: "layers" },
+      { id: "projects", title: "FEATURED PROJECTS", enabled: true, icon: "folder-git" },
+      { id: "education", title: "EDUCATION & CERTIFICATIONS", enabled: true, icon: "graduation-cap" }
     ];
 
     /* Dữ liệu nền tối thiểu. Nội dung thật được tải từ API /api/templates. */
@@ -46,10 +46,16 @@
       relaxed: { pad: "px-10 py-10", gap: 18, inner: 9, heading: 7, bullet: 4 }
     };
 
+    const DEFAULT_TEMPLATE_SLUG = "fullstack";
+
     let resumeData = createBaseResumeData();
+    let currentTemplate = { slug: DEFAULT_TEMPLATE_SLUG, name: "Fullstack Web", description: "", order: 1 };
     let currentZoom = 1;
     let renderTimer = null;
     let toastTimer = null;
+    let saveTimer = null;
+    let saveInFlight = false;
+    let saveQueued = false;
 
     const $ = (sel, root = document) => root.querySelector(sel);
     const $$ = (sel, root = document) => Array.from(root.querySelectorAll(sel));
@@ -74,6 +80,76 @@
     function scheduleRender() {
       clearTimeout(renderTimer);
       renderTimer = setTimeout(renderMultiPageResume, 80);
+    }
+
+    function getCurrentSlug() {
+      if (currentTemplate && currentTemplate.slug) return currentTemplate.slug;
+      const select = $("#presetSelect");
+      return select && select.value ? select.value : null;
+    }
+
+    function scheduleAutoSave() {
+      if (!getCurrentSlug()) return;
+      clearTimeout(saveTimer);
+      saveTimer = setTimeout(saveCurrentTemplate, 800);
+    }
+
+    async function flushAutoSave() {
+      if (!getCurrentSlug()) return;
+      if (saveTimer) {
+        clearTimeout(saveTimer);
+        saveTimer = null;
+        await saveCurrentTemplate();
+        return;
+      }
+      while (saveInFlight || saveQueued) {
+        await new Promise(resolve => setTimeout(resolve, 30));
+      }
+    }
+
+    function markChanged({ render = "debounced", save = true } = {}) {
+      if (render === "debounced") scheduleRender();
+      else if (render === "now") renderMultiPageResume();
+      if (save) scheduleAutoSave();
+    }
+
+    async function saveCurrentTemplate() {
+      const slug = getCurrentSlug();
+      if (!slug) return;
+      if (!currentTemplate || currentTemplate.slug !== slug) {
+        currentTemplate = { ...(currentTemplate || {}), slug, name: (currentTemplate && currentTemplate.name) || slug, description: (currentTemplate && currentTemplate.description) || "", order: (currentTemplate && currentTemplate.order) || 0 };
+      }
+      if (saveInFlight) {
+        saveQueued = true;
+        return;
+      }
+
+      saveInFlight = true;
+      try {
+        const payload = {
+          name: currentTemplate.name || "Preset JD",
+          description: currentTemplate.description || "",
+          profile: resumeData.profile,
+          sections: resumeData.sections,
+          skills: resumeData.skills,
+          experiences: resumeData.experiences,
+          projects: resumeData.projects,
+          styling: resumeData.styling
+        };
+        await fetchJSON(`/api/templates/${encodeURIComponent(slug)}`, {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload)
+        });
+      } catch (err) {
+        showToast("Không tự lưu được preset");
+      } finally {
+        saveInFlight = false;
+        if (saveQueued) {
+          saveQueued = false;
+          scheduleAutoSave();
+        }
+      }
     }
 
     function showToast(msg) {
@@ -121,12 +197,12 @@
       if (Array.isArray(raw.skills)) {
         data.skills = raw.skills.map((group, idx) => ({
           id: group.id || `cat-${idx}`,
-          categoryName: group.categoryName || "Nhóm kỹ năng",
+          categoryName: group.categoryName || "Technology Group",
           skills: Array.isArray(group.skills)
             ? group.skills.map(skill => (
                 typeof skill === "string"
-                  ? { name: skill, enabled: true }
-                  : { name: skill.name || "", enabled: skill.enabled !== false }
+                  ? { name: skill, description: "", enabled: true }
+                  : { name: skill.name || "", description: skill.description || "", enabled: skill.enabled !== false }
               ))
             : []
         }));
@@ -153,6 +229,7 @@
           name: proj.name || "",
           role: proj.role || "",
           time: proj.time || "",
+          teamType: proj.teamType || "Individual Project",
           link: proj.link || "",
           technologies: Array.isArray(proj.technologies)
             ? proj.technologies.map(String)
@@ -169,7 +246,6 @@
     /* ----------------------------------------------------
        INIT & TEMPLATE LOADING
     ---------------------------------------------------- */
-    const DEFAULT_TEMPLATE_SLUG = "fullstack";
 
     async function fetchJSON(url, options = {}) {
       const response = await fetch(url, {
@@ -212,6 +288,12 @@
       const select = $("#presetSelect");
       try {
         const raw = await fetchJSON(`/api/templates/${encodeURIComponent(slug)}`);
+        currentTemplate = {
+          slug: raw.slug,
+          name: raw.name || slug,
+          description: raw.description || "",
+          order: raw.order || 0
+        };
         resumeData = normalizeResumeData(raw);
         refreshAllViews();
         if (select && select.value !== slug) select.value = slug;
@@ -223,8 +305,10 @@
       }
     }
 
-    function switchTemplate(slug) {
-      if (slug) loadTemplate(slug);
+    async function switchTemplate(slug) {
+      if (!slug) return;
+      await flushAutoSave();
+      await loadTemplate(slug);
     }
 
     async function createPresetFromCurrent() {
@@ -251,6 +335,12 @@
           })
         });
 
+        currentTemplate = {
+          slug: created.slug,
+          name: created.name,
+          description: created.description || "",
+          order: created.order || 0
+        };
         await loadTemplateList();
         const select = $("#presetSelect");
         if (select) select.value = created.slug;
@@ -260,10 +350,36 @@
       }
     }
 
+    async function renameCurrentPreset() {
+      const slug = getCurrentSlug();
+      if (!slug) {
+        showToast("Chưa có preset để đổi tên");
+        return;
+      }
+
+      const input = window.prompt("Tên preset mới:", currentTemplate.name || "");
+      if (input === null) return;
+
+      const name = input.trim();
+      if (!name) {
+        showToast("Tên preset không được để trống");
+        return;
+      }
+
+      currentTemplate.name = name;
+      markChanged({ render: "none", save: true });
+      await flushAutoSave();
+      await loadTemplateList();
+      const select = $("#presetSelect");
+      if (select) select.value = slug;
+      showToast(`Đã đổi tên preset thành "${name}"`);
+    }
+
     window.addEventListener("DOMContentLoaded", async () => {
       await loadTemplateList();
       const loaded = await loadTemplate(DEFAULT_TEMPLATE_SLUG);
       if (!loaded) {
+        currentTemplate = { slug: null, name: "", description: "", order: 0 };
         resumeData = normalizeResumeData(createBaseResumeData());
         refreshAllViews();
       }
@@ -340,7 +456,7 @@
     function getSectionDefaultLabel(id) {
       const map = {
         summary: "Mục Tóm Tắt (Summary)",
-        skills: "Mục Kỹ Năng (Skills)",
+        skills: "Mục Công Nghệ & Kinh Nghiệm Sử Dụng",
         experience: "Mục Kinh Nghiệm (Experience)",
         projects: "Mục Dự Án (Projects)",
         education: "Mục Học Vấn & Chứng Chỉ (Education & Certs)"
@@ -350,13 +466,13 @@
 
     function updateSectionTitle(idx, val) {
       resumeData.sections[idx].title = val;
-      scheduleRender();
+      markChanged();
     }
 
     function toggleSectionVisibility(idx) {
       resumeData.sections[idx].enabled = !resumeData.sections[idx].enabled;
       renderSectionTitlesConfig();
-      renderMultiPageResume();
+      markChanged({ render: "now" });
     }
 
     function moveSection(idx, direction) {
@@ -366,13 +482,13 @@
       resumeData.sections[idx] = resumeData.sections[targetIdx];
       resumeData.sections[targetIdx] = temp;
       renderSectionTitlesConfig();
-      renderMultiPageResume();
+      markChanged({ render: "now" });
     }
 
     function resetSectionTitles() {
       resumeData.sections = deepClone(DEFAULT_SECTIONS);
       renderSectionTitlesConfig();
-      renderMultiPageResume();
+      markChanged({ render: "now" });
       showToast("Đã khôi phục tiêu đề mặc định!");
     }
 
@@ -406,48 +522,53 @@
 
     function updateProfileField(field, value) {
       resumeData.profile[field] = value;
-      scheduleRender();
+      markChanged();
     }
 
     /* ----------------------------------------------------
-       SKILLS (JOB TAILORING)
+       TECHNOLOGY & USAGE EXPERIENCE (replaces skills checklist)
     ---------------------------------------------------- */
     function renderSkillsConfig() {
       const container = $("#skills-container");
       if (!container) return;
 
       container.innerHTML = resumeData.skills.map((group, groupIdx) => `
-        <div class="bg-slate-900 border border-slate-800 rounded-xl p-3.5 space-y-2.5">
-          <div class="flex items-center justify-between">
+        <div class="bg-slate-900 border border-slate-800 rounded-xl p-3.5 space-y-3">
+          <div class="flex items-center justify-between gap-2">
             <span class="font-medium text-xs text-emerald-400 flex items-center gap-1.5 uppercase tracking-wide">
-              <i data-lucide="tag" class="w-3.5 h-3.5"></i> ${escapeHTML(group.categoryName)}
+              <i data-lucide="cpu" class="w-3.5 h-3.5"></i> ${escapeHTML(group.categoryName)}
             </span>
-            <div class="flex items-center gap-2">
-              <button onclick="toggleAllSkillsInGroup(${groupIdx}, true)" class="text-[10px] text-slate-400 hover:text-white underline">Chọn hết</button>
-              <span class="text-slate-600">|</span>
-              <button onclick="toggleAllSkillsInGroup(${groupIdx}, false)" class="text-[10px] text-slate-400 hover:text-white underline">Bỏ hết</button>
+            <div class="flex items-center gap-1.5">
+              <button onclick="moveSkillGroup(${groupIdx}, -1)" ${groupIdx === 0 ? 'disabled class="opacity-30 p-1"' : 'class="p-1 text-slate-400 hover:text-white"'} title="Lên"><i data-lucide="chevron-up" class="w-3.5 h-3.5"></i></button>
+              <button onclick="moveSkillGroup(${groupIdx}, 1)" ${groupIdx === resumeData.skills.length - 1 ? 'disabled class="opacity-30 p-1"' : 'class="p-1 text-slate-400 hover:text-white"'} title="Xuống"><i data-lucide="chevron-down" class="w-3.5 h-3.5"></i></button>
             </div>
           </div>
 
-          <div class="flex flex-wrap gap-1.5 pt-1">
+          <div class="space-y-2.5">
             ${group.skills.map((skill, skillIdx) => `
-              <label class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs cursor-pointer border transition select-none ${
-                skill.enabled
-                  ? "bg-emerald-950/40 border-emerald-500/50 text-emerald-300 font-medium"
-                  : "bg-slate-950 border-slate-800 text-slate-400 line-through opacity-60"
-              }">
-                <input type="checkbox" ${skill.enabled ? "checked" : ""} onchange="toggleSkill(${groupIdx}, ${skillIdx})" class="sr-only">
-                <span>${escapeHTML(skill.name)}</span>
-              </label>
+              <div class="bg-slate-950/70 border ${skill.enabled ? "border-slate-700/80" : "border-slate-800 opacity-60"} rounded-lg p-2.5 space-y-2">
+                <div class="flex items-center justify-between gap-2">
+                  <div class="flex items-center gap-2 min-w-0 flex-1">
+                    <label class="relative inline-flex items-center cursor-pointer shrink-0">
+                      <input type="checkbox" ${skill.enabled ? "checked" : ""} onchange="toggleSkill(${groupIdx}, ${skillIdx})" class="sr-only peer">
+                      <div class="w-8 h-4 bg-slate-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-3 after:w-3 after:transition-all peer-checked:bg-emerald-600"></div>
+                    </label>
+                    <input type="text" value="${escapeHTML(skill.name)}" oninput="updateSkillField(${groupIdx}, ${skillIdx}, 'name', this.value)" placeholder="Công nghệ (VD: Python, FastAPI)" class="flex-1 min-w-0 bg-slate-900 border border-slate-700/80 rounded px-2.5 py-1.5 text-xs text-white outline-none focus:border-emerald-500 font-medium">
+                  </div>
+                  <div class="flex items-center gap-0.5 shrink-0">
+                    <button onclick="moveSkillItem(${groupIdx}, ${skillIdx}, -1)" ${skillIdx === 0 ? 'disabled class="opacity-30 p-1"' : 'class="p-1 text-slate-400 hover:text-white"'} title="Lên"><i data-lucide="chevron-up" class="w-3.5 h-3.5"></i></button>
+                    <button onclick="moveSkillItem(${groupIdx}, ${skillIdx}, 1)" ${skillIdx === group.skills.length - 1 ? 'disabled class="opacity-30 p-1"' : 'class="p-1 text-slate-400 hover:text-white"'} title="Xuống"><i data-lucide="chevron-down" class="w-3.5 h-3.5"></i></button>
+                    <button onclick="removeSkillItem(${groupIdx}, ${skillIdx})" class="text-slate-500 hover:text-red-400 p-1" title="Xóa"><i data-lucide="trash-2" class="w-3.5 h-3.5"></i></button>
+                  </div>
+                </div>
+                <textarea rows="2" oninput="updateSkillField(${groupIdx}, ${skillIdx}, 'description', this.value)" placeholder="Mô tả kinh nghiệm sử dụng (VD: Xử lý tác vụ AI, phân tích dữ liệu lớn; xây dựng API/web nhanh với FastAPI...)" class="w-full bg-slate-900 border border-slate-700/80 rounded px-2.5 py-1.5 text-xs text-slate-200 outline-none focus:border-emerald-500 resize-none">${escapeHTML(skill.description || "")}</textarea>
+              </div>
             `).join("")}
           </div>
 
-          <div class="flex items-center gap-2 pt-1 border-t border-slate-800/60">
-            <input type="text" id="new-skill-input-${groupIdx}" placeholder="Thêm skill mới..." class="flex-1 bg-slate-950 border border-slate-800 rounded px-2.5 py-1 text-xs text-slate-300 outline-none focus:border-emerald-500">
-            <button onclick="addSkillToGroup(${groupIdx})" class="px-2.5 py-1 bg-slate-800 hover:bg-slate-700 text-xs rounded text-slate-200">
-              + Thêm
-            </button>
-          </div>
+          <button onclick="addSkillToGroup(${groupIdx})" class="w-full py-1.5 text-xs rounded-lg border border-dashed border-slate-700 text-slate-400 hover:text-emerald-400 hover:border-emerald-500/50 transition flex items-center justify-center gap-1.5">
+            <i data-lucide="plus" class="w-3.5 h-3.5"></i> Thêm công nghệ
+          </button>
         </div>
       `).join("");
 
@@ -457,24 +578,51 @@
     function toggleSkill(groupIdx, skillIdx) {
       resumeData.skills[groupIdx].skills[skillIdx].enabled = !resumeData.skills[groupIdx].skills[skillIdx].enabled;
       renderSkillsConfig();
-      renderMultiPageResume();
+      markChanged({ render: "now" });
+    }
+
+    function updateSkillField(groupIdx, skillIdx, field, value) {
+      resumeData.skills[groupIdx].skills[skillIdx][field] = value;
+      markChanged();
+    }
+
+    function addSkillToGroup(groupIdx) {
+      resumeData.skills[groupIdx].skills.push({ name: "", description: "", enabled: true });
+      renderSkillsConfig();
+      markChanged({ render: "now" });
+    }
+
+    function removeSkillItem(groupIdx, skillIdx) {
+      resumeData.skills[groupIdx].skills.splice(skillIdx, 1);
+      renderSkillsConfig();
+      markChanged({ render: "now" });
+    }
+
+    function moveSkillItem(groupIdx, skillIdx, direction) {
+      const list = resumeData.skills[groupIdx].skills;
+      const targetIdx = skillIdx + direction;
+      if (targetIdx < 0 || targetIdx >= list.length) return;
+      const temp = list[skillIdx];
+      list[skillIdx] = list[targetIdx];
+      list[targetIdx] = temp;
+      renderSkillsConfig();
+      markChanged({ render: "now" });
+    }
+
+    function moveSkillGroup(idx, direction) {
+      const targetIdx = idx + direction;
+      if (targetIdx < 0 || targetIdx >= resumeData.skills.length) return;
+      const temp = resumeData.skills[idx];
+      resumeData.skills[idx] = resumeData.skills[targetIdx];
+      resumeData.skills[targetIdx] = temp;
+      renderSkillsConfig();
+      markChanged({ render: "now" });
     }
 
     function toggleAllSkillsInGroup(groupIdx, state) {
       resumeData.skills[groupIdx].skills.forEach(skill => { skill.enabled = state; });
       renderSkillsConfig();
-      renderMultiPageResume();
-    }
-
-    function addSkillToGroup(groupIdx) {
-      const input = $(`#new-skill-input-${groupIdx}`);
-      if (!input || !input.value.trim()) return;
-      const skillName = input.value.trim();
-      resumeData.skills[groupIdx].skills.push({ name: skillName, enabled: true });
-      input.value = "";
-      renderSkillsConfig();
-      renderMultiPageResume();
-      showToast(`Đã thêm ${skillName}`);
+      markChanged({ render: "now" });
     }
 
     function addSkillCategoryModal() {
@@ -493,7 +641,7 @@
       const skillsList = itemsStr.split(",")
         .map(item => item.trim())
         .filter(Boolean)
-        .map(item => ({ name: item, enabled: true }));
+        .map(item => ({ name: item, description: "", enabled: true }));
 
       resumeData.skills.push({
         id: `cat-${Date.now()}`,
@@ -505,8 +653,8 @@
       $("#modal-skill-items").value = "";
       closeSkillModal();
       renderSkillsConfig();
-      renderMultiPageResume();
-      showToast(`Đã thêm nhóm kỹ năng ${name}`);
+      markChanged({ render: "now" });
+      showToast(`Đã thêm nhóm công nghệ ${name}`);
     }
 
     /* ----------------------------------------------------
@@ -528,15 +676,27 @@
                 ${escapeHTML(proj.name || "Dự án không tên")}
               </span>
             </div>
-            <button onclick="removeProject(${idx})" class="text-slate-500 hover:text-red-400 p-1" title="Xóa dự án">
-              <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
-            </button>
+            <div class="flex items-center gap-0.5">
+              <button onclick="moveProject(${idx}, -1)" ${idx === 0 ? 'disabled class="opacity-30 p-1"' : 'class="p-1 text-slate-400 hover:text-white"'} title="Lên"><i data-lucide="chevron-up" class="w-3.5 h-3.5"></i></button>
+              <button onclick="moveProject(${idx}, 1)" ${idx === resumeData.projects.length - 1 ? 'disabled class="opacity-30 p-1"' : 'class="p-1 text-slate-400 hover:text-white"'} title="Xuống"><i data-lucide="chevron-down" class="w-3.5 h-3.5"></i></button>
+              <button onclick="removeProject(${idx})" class="text-slate-500 hover:text-red-400 p-1" title="Xóa dự án">
+                <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
+              </button>
+            </div>
           </div>
 
           <div class="space-y-2 text-xs">
             <div class="grid grid-cols-1 gap-3">
               <input type="text" value="${escapeHTML(proj.name)}" oninput="updateProjectField(${idx}, 'name', this.value)" placeholder="Tên dự án..." class="bg-slate-950 border border-slate-800 rounded px-2.5 py-1.5 text-slate-200 outline-none focus:border-emerald-500">
               <input type="text" value="${escapeHTML(proj.role)}" oninput="updateProjectField(${idx}, 'role', this.value)" placeholder="Vai trò (Lead, Backend...)" class="bg-slate-950 border border-slate-800 rounded px-2.5 py-1.5 text-slate-200 outline-none focus:border-emerald-500">
+            </div>
+
+            <div class="grid grid-cols-2 gap-3">
+              <input type="text" value="${escapeHTML(proj.time || "")}" oninput="updateProjectField(${idx}, 'time', this.value)" placeholder="Thời gian (VD: 01/2025 - 06/2025)" class="bg-slate-950 border border-slate-800 rounded px-2.5 py-1.5 text-slate-200 outline-none focus:border-emerald-500">
+              <select onchange="updateProjectField(${idx}, 'teamType', this.value)" class="bg-slate-950 border border-slate-800 rounded px-2.5 py-1.5 text-slate-200 outline-none focus:border-emerald-500">
+                <option value="Individual Project" ${proj.teamType === "Individual Project" ? "selected" : ""}>Cá nhân (Individual)</option>
+                <option value="Team Project" ${proj.teamType === "Team Project" ? "selected" : ""}>Nhóm (Team)</option>
+              </select>
             </div>
 
             <div class="grid grid-cols-1 gap-3">
@@ -558,22 +718,22 @@
     function toggleProject(idx) {
       resumeData.projects[idx].enabled = !resumeData.projects[idx].enabled;
       renderProjectsConfig();
-      renderMultiPageResume();
+      markChanged({ render: "now" });
     }
 
     function updateProjectField(idx, field, value) {
       resumeData.projects[idx][field] = value;
-      scheduleRender();
+      markChanged();
     }
 
     function updateProjectTechs(idx, value) {
       resumeData.projects[idx].technologies = value.split(",").map(t => t.trim()).filter(Boolean);
-      scheduleRender();
+      markChanged();
     }
 
     function updateProjectBullets(idx, value) {
       resumeData.projects[idx].bullets = value.split("\n").filter(line => line.trim().length > 0);
-      scheduleRender();
+      markChanged();
     }
 
     function addNewProject() {
@@ -583,6 +743,7 @@
         name: "Dự án mới",
         role: "Fullstack Developer",
         time: "2024",
+        teamType: "Individual Project",
         technologies: ["TypeScript", "Node.js", "Docker"],
         link: "github.com/username/project",
         bullets: [
@@ -591,15 +752,25 @@
         ]
       });
       renderProjectsConfig();
-      renderMultiPageResume();
+      markChanged({ render: "now" });
       showToast("Đã thêm dự án mới");
     }
 
     function removeProject(idx) {
       resumeData.projects.splice(idx, 1);
       renderProjectsConfig();
-      renderMultiPageResume();
+      markChanged({ render: "now" });
       showToast("Đã xóa dự án");
+    }
+
+    function moveProject(idx, direction) {
+      const targetIdx = idx + direction;
+      if (targetIdx < 0 || targetIdx >= resumeData.projects.length) return;
+      const temp = resumeData.projects[idx];
+      resumeData.projects[idx] = resumeData.projects[targetIdx];
+      resumeData.projects[targetIdx] = temp;
+      renderProjectsConfig();
+      markChanged({ render: "now" });
     }
 
     /* ----------------------------------------------------
@@ -621,9 +792,13 @@
                 ${escapeHTML(exp.company || "Công ty")}
               </span>
             </div>
-            <button onclick="removeExperience(${idx})" class="text-slate-500 hover:text-red-400 p-1" title="Xóa kinh nghiệm">
-              <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
-            </button>
+            <div class="flex items-center gap-0.5">
+              <button onclick="moveExperience(${idx}, -1)" ${idx === 0 ? 'disabled class="opacity-30 p-1"' : 'class="p-1 text-slate-400 hover:text-white"'} title="Lên"><i data-lucide="chevron-up" class="w-3.5 h-3.5"></i></button>
+              <button onclick="moveExperience(${idx}, 1)" ${idx === resumeData.experiences.length - 1 ? 'disabled class="opacity-30 p-1"' : 'class="p-1 text-slate-400 hover:text-white"'} title="Xuống"><i data-lucide="chevron-down" class="w-3.5 h-3.5"></i></button>
+              <button onclick="removeExperience(${idx})" class="text-slate-500 hover:text-red-400 p-1" title="Xóa kinh nghiệm">
+                <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
+              </button>
+            </div>
           </div>
 
           <div class="space-y-2 text-xs">
@@ -651,17 +826,17 @@
     function toggleExperience(idx) {
       resumeData.experiences[idx].enabled = !resumeData.experiences[idx].enabled;
       renderExperienceConfig();
-      renderMultiPageResume();
+      markChanged({ render: "now" });
     }
 
     function updateExperienceField(idx, field, value) {
       resumeData.experiences[idx][field] = value;
-      scheduleRender();
+      markChanged();
     }
 
     function updateExperienceBullets(idx, value) {
       resumeData.experiences[idx].bullets = value.split("\n").filter(line => line.trim().length > 0);
-      scheduleRender();
+      markChanged();
     }
 
     function addNewExperience() {
@@ -678,15 +853,25 @@
         ]
       });
       renderExperienceConfig();
-      renderMultiPageResume();
+      markChanged({ render: "now" });
       showToast("Đã thêm kinh nghiệm");
     }
 
     function removeExperience(idx) {
       resumeData.experiences.splice(idx, 1);
       renderExperienceConfig();
-      renderMultiPageResume();
+      markChanged({ render: "now" });
       showToast("Đã xóa kinh nghiệm");
+    }
+
+    function moveExperience(idx, direction) {
+      const targetIdx = idx + direction;
+      if (targetIdx < 0 || targetIdx >= resumeData.experiences.length) return;
+      const temp = resumeData.experiences[idx];
+      resumeData.experiences[idx] = resumeData.experiences[targetIdx];
+      resumeData.experiences[targetIdx] = temp;
+      renderExperienceConfig();
+      markChanged({ render: "now" });
     }
 
     /* ----------------------------------------------------
@@ -696,34 +881,34 @@
       resumeData.styling.accentColor = color;
       const customColor = $("#cfg-customColor");
       if (customColor) customColor.value = color;
-      renderMultiPageResume();
+      markChanged({ render: "now" });
     }
 
     function setFontFamily(fontClass) {
       resumeData.styling.fontFamily = fontClass;
       syncStyleControls();
-      renderMultiPageResume();
+      markChanged({ render: "now" });
     }
 
     function setDensity(level, evt) {
       resumeData.styling.density = level;
       syncStyleControls();
-      renderMultiPageResume();
+      markChanged({ render: "now" });
     }
 
     function toggleSeparators(checked) {
       resumeData.styling.showSeparators = checked;
-      renderMultiPageResume();
+      markChanged({ render: "now" });
     }
 
     function togglePillTags(checked) {
       resumeData.styling.pillTags = checked;
-      renderMultiPageResume();
+      markChanged({ render: "now" });
     }
 
     function togglePageNumbers(checked) {
       resumeData.styling.showPageNumbers = checked;
-      renderMultiPageResume();
+      markChanged({ render: "now" });
     }
 
     function syncStyleControls() {
@@ -813,7 +998,7 @@
       return `
         <h2 class="section-title text-xs font-bold uppercase tracking-wider flex items-center justify-between" style="color: ${accent};">
           <span class="flex items-center gap-1.5">
-            <i data-lucide="${sec.icon || "terminal"}" class="w-3.5 h-3.5"></i>
+            <i data-lucide="${sec.icon || "terminal"}" class="w-3.5 h-3.5 shrink-0"></i>
             <span>${escapeHTML(sec.title)}${continued ? ' <span class="font-normal normal-case tracking-normal text-[10px] text-gray-400">(tiếp theo)</span>' : ""}</span>
           </span>
           ${rightHTML}
@@ -824,13 +1009,23 @@
     function buildHeaderHTML() {
       const p = resumeData.profile;
       const accent = resumeData.styling.accentColor;
+      const iconClass = "w-3.5 h-3.5 text-gray-500 shrink-0 block";
+      const brandIcon = (type) => {
+        if (type === "github") {
+          return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="${iconClass}" aria-hidden="true"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"/><path d="M9 18c-4.51 2-5-2-7-2"/></svg>`;
+        }
+        if (type === "linkedin") {
+          return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="${iconClass}" aria-hidden="true"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect width="4" height="12" x="2" y="9"/><circle cx="4" cy="4" r="2"/></svg>`;
+        }
+        return "";
+      };
 
       return `
         <header class="border-b pb-3 resume-block" style="border-color: #e5e7eb;">
           <div class="flex flex-col sm:flex-row sm:items-start justify-between gap-2">
             <div>
               <h1 class="text-2xl sm:text-3xl font-bold tracking-tight text-gray-900">
-                ${escapeHTML(p.fullName || "HỌ VÀ TÊN")}
+                ${escapeHTML(p.fullName || "FULL NAME")}
               </h1>
               <p class="text-base font-semibold tracking-wide mt-0.5" style="color: ${accent};">
                 ${escapeHTML((p.title || "SOFTWARE ENGINEER").toUpperCase())}
@@ -839,45 +1034,45 @@
 
             <div class="text-xs text-gray-500 text-left sm:text-right space-y-1 font-mono">
               <div class="flex items-center sm:justify-end gap-1.5">
-                <i data-lucide="map-pin" class="w-3.5 h-3.5 text-gray-400"></i>
-                <span>${escapeHTML(p.location || "Việt Nam")}</span>
+                <i data-lucide="map-pin" class="w-3.5 h-3.5 text-gray-400 shrink-0"></i>
+                <span class="leading-none">${escapeHTML(p.location || "Vietnam")}</span>
               </div>
               <div class="flex items-center sm:justify-end gap-2 text-[11px]">
                 <span class="inline-block w-2 h-2 rounded-full bg-emerald-500"></span>
-                <span class="text-gray-600 font-medium">Sẵn sàng nhận việc</span>
+                <span class="text-gray-600 font-medium leading-none">Open to work</span>
               </div>
             </div>
           </div>
 
-          <div class="mt-2.5 pt-2 border-t border-gray-100 flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-gray-600 font-mono">
+          <div class="mt-2.5 pt-2 border-t border-gray-100 flex flex-wrap items-center gap-x-4 gap-y-1.5 text-xs text-gray-600 font-mono">
             ${p.email ? `
               <a href="mailto:${escapeHTML(p.email)}" class="hover:underline flex items-center gap-1.5">
-                <i data-lucide="mail" class="w-3.5 h-3.5 text-gray-500"></i>
-                <span>${escapeHTML(p.email)}</span>
+                <i data-lucide="mail" class="w-3.5 h-3.5 text-gray-500 shrink-0"></i>
+                <span class="leading-none">${escapeHTML(p.email)}</span>
               </a>
             ` : ""}
             ${p.phone ? `
               <a href="tel:${escapeHTML(p.phone)}" class="hover:underline flex items-center gap-1.5">
-                <i data-lucide="phone" class="w-3.5 h-3.5 text-gray-500"></i>
-                <span>${escapeHTML(p.phone)}</span>
+                <i data-lucide="phone" class="w-3.5 h-3.5 text-gray-500 shrink-0"></i>
+                <span class="leading-none">${escapeHTML(p.phone)}</span>
               </a>
             ` : ""}
             ${p.github ? `
               <a href="${escapeHTML(p.github.startsWith("http") ? p.github : "https://" + p.github)}" target="_blank" class="hover:underline flex items-center gap-1.5">
-                <i data-lucide="github" class="w-3.5 h-3.5 text-gray-500"></i>
-                <span>${escapeHTML(p.github)}</span>
+                ${brandIcon("github")}
+                <span class="leading-none">${escapeHTML(p.github)}</span>
               </a>
             ` : ""}
             ${p.linkedin ? `
               <a href="${escapeHTML(p.linkedin.startsWith("http") ? p.linkedin : "https://" + p.linkedin)}" target="_blank" class="hover:underline flex items-center gap-1.5">
-                <i data-lucide="linkedin" class="w-3.5 h-3.5 text-gray-500"></i>
-                <span>${escapeHTML(p.linkedin)}</span>
+                ${brandIcon("linkedin")}
+                <span class="leading-none">${escapeHTML(p.linkedin)}</span>
               </a>
             ` : ""}
             ${p.portfolio ? `
               <a href="${escapeHTML(p.portfolio.startsWith("http") ? p.portfolio : "https://" + p.portfolio)}" target="_blank" class="hover:underline flex items-center gap-1.5">
-                <i data-lucide="globe" class="w-3.5 h-3.5 text-gray-500"></i>
-                <span>${escapeHTML(p.portfolio)}</span>
+                <i data-lucide="globe" class="w-3.5 h-3.5 text-gray-500 shrink-0"></i>
+                <span class="leading-none">${escapeHTML(p.portfolio)}</span>
               </a>
             ` : ""}
           </div>
@@ -911,10 +1106,9 @@
 
       if (!activeGroups.length) return [];
 
-      const totalActive = activeGroups.reduce((total, group) => total + group.activeSkills.length, 0);
       const chunks = [
         chunk(
-          sectionHeadingHTML(sec, false, `<span class="text-[10px] font-normal font-mono text-gray-400 lowercase">${totalActive} skills</span>`),
+          sectionHeadingHTML(sec),
           sec,
           "heading",
           `heading-${sec.id}`,
@@ -924,37 +1118,41 @@
       ];
 
       activeGroups.forEach((group, idx) => {
-        const isLast = idx === activeGroups.length - 1;
+        const isLastGroup = idx === activeGroups.length - 1;
         chunks.push(chunk(
-          buildSkillRowHTML(group),
+          `<div class="text-[11.5px] font-bold text-gray-800">${escapeHTML(group.categoryName)}</div>`,
           sec,
           "item",
-          `skill-group-${group.id || idx}`,
-          isLast ? density.gap : density.inner
+          `skill-group-${group.id || idx}-title`,
+          density.bullet
         ));
+
+        group.activeSkills.forEach((skill, sIdx) => {
+          const isLast = isLastGroup && sIdx === group.activeSkills.length - 1;
+          chunks.push(chunk(
+            buildSkillRowHTML(skill),
+            sec,
+            "item",
+            `skill-item-${group.id || idx}-${sIdx}`,
+            isLast ? density.gap : density.bullet
+          ));
+        });
       });
 
       return chunks;
     }
 
-    function buildSkillRowHTML(group) {
-      const pillTags = resumeData.styling.pillTags;
+    function buildSkillRowHTML(skill) {
+      const name = escapeHTML(skill.name || "");
+      const desc = escapeHTML(skill.description || "");
       return `
-        <div class="flex flex-col sm:flex-row sm:items-baseline gap-1 sm:gap-2">
-          <span class="font-bold text-[11.5px] text-gray-800 shrink-0 w-44">
-            ${escapeHTML(group.categoryName)}:
+        <div class="flex gap-1.5 text-xs text-gray-700 leading-relaxed">
+          <span class="text-gray-400 shrink-0">•</span>
+          <span>
+            ${name ? `<span class="font-semibold text-gray-800">${name}</span>` : ""}
+            ${name && desc ? `<span class="text-gray-500">: </span>` : ""}
+            ${desc ? `<span>${desc}</span>` : ""}
           </span>
-          <div class="flex flex-wrap items-center gap-1.5 flex-1">
-            ${group.activeSkills.map(skill => pillTags ? `
-              <span class="inline-block text-[11px] font-mono px-2 py-0.5 rounded bg-gray-100 text-gray-800 border border-gray-200">
-                ${escapeHTML(skill.name)}
-              </span>
-            ` : `
-              <span class="text-[11.5px] text-gray-700 font-mono after:content-[','] last:after:content-['']">
-                ${escapeHTML(skill.name)}
-              </span>
-            `).join("")}
-          </div>
         </div>
       `;
     }
@@ -1056,22 +1254,25 @@
     }
 
     function buildProjectHeaderHTML(proj) {
+      const teamLabel = proj.teamType === "Team Project" ? "Team" : "Individual";
+      const metaParts = [proj.time, teamLabel].filter(Boolean);
       return `
         <div class="flex justify-between items-baseline gap-2">
           <div class="min-w-0">
             <div class="flex flex-wrap items-center gap-1.5">
               <span class="font-bold text-xs text-gray-900">${escapeHTML(proj.name)}</span>
-              <span class="text-[11px] text-gray-500 font-medium font-mono">(${escapeHTML(proj.role)})</span>
+              ${proj.role ? `<span class="text-[11px] text-gray-500 font-medium font-mono">(${escapeHTML(proj.role)})</span>` : ""}
+              <span class="text-[10px] font-mono px-1.5 py-0.5 rounded bg-slate-100 text-slate-600 border border-slate-200">${escapeHTML(teamLabel)}</span>
             </div>
             ${proj.link ? `
               <div class="mt-0.5">
-                <a href="${escapeHTML(proj.link.startsWith("http") ? proj.link : "https://" + proj.link)}" target="_blank" class="text-[11px] text-emerald-700 hover:underline inline-flex items-center gap-0.5 font-mono break-all">
-                  <i data-lucide="external-link" class="w-2.5 h-2.5 shrink-0"></i> ${escapeHTML(proj.link)}
+                <a href="${escapeHTML(proj.link.startsWith("http") ? proj.link : "https://" + proj.link)}" target="_blank" class="text-[11px] text-emerald-700 hover:underline inline-flex items-center gap-1 font-mono break-all leading-none">
+                  <i data-lucide="external-link" class="w-2.5 h-2.5 shrink-0"></i> <span>${escapeHTML(proj.link)}</span>
                 </a>
               </div>
             ` : ""}
           </div>
-          <span class="text-[11px] font-mono text-gray-500 shrink-0">${escapeHTML(proj.time)}</span>
+          <span class="text-[11px] font-mono text-gray-500 shrink-0">${escapeHTML(proj.time || "")}</span>
         </div>
       `;
     }
@@ -1385,13 +1586,8 @@
           }
 
           resumeData = normalizeResumeData(parsed);
-          loadProfileInputs();
-          syncStyleControls();
-          renderSectionTitlesConfig();
-          renderSkillsConfig();
-          renderProjectsConfig();
-          renderExperienceConfig();
-          renderMultiPageResume();
+          refreshAllViews();
+          markChanged({ render: "now" });
           showToast("Đã tải cấu hình CV thành công!");
         } catch (err) {
           showToast("Lỗi đọc file JSON!");

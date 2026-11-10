@@ -66,6 +66,9 @@
         <select id="presetSelect" onchange="switchTemplate(this.value)" class="bg-transparent text-slate-200 outline-none cursor-pointer font-medium hover:text-white">
           <option value="" class="bg-slate-900">Đang tải...</option>
         </select>
+        <button onclick="renameCurrentPreset()" title="Đổi tên preset đang chọn" class="p-1 rounded hover:bg-slate-700 text-slate-400 hover:text-white transition">
+          <i data-lucide="pencil" class="w-3.5 h-3.5"></i>
+        </button>
       </div>
 
       <!-- Add custom preset -->
@@ -108,7 +111,7 @@
           <i data-lucide="heading" class="w-3.5 h-3.5"></i> Tiêu đề & Mục
         </button>
         <button onclick="switchTab('skills')" id="tab-btn-skills" class="tab-btn px-3 py-1.5 rounded-md flex items-center gap-1.5 text-slate-400 hover:bg-slate-800 hover:text-slate-300 transition shrink-0">
-          <i data-lucide="code" class="w-3.5 h-3.5"></i> Kỹ năng (JD)
+          <i data-lucide="code" class="w-3.5 h-3.5"></i> Công nghệ
         </button>
         <button onclick="switchTab('projects')" id="tab-btn-projects" class="tab-btn px-3 py-1.5 rounded-md flex items-center gap-1.5 text-slate-400 hover:bg-slate-800 hover:text-slate-300 transition shrink-0">
           <i data-lucide="folder-git-2" class="w-3.5 h-3.5"></i> Dự án
@@ -220,22 +223,22 @@
           </div>
         </div>
 
-        <!-- TAB 3: SKILLS TAILORING (TICK TO MATCH JD) -->
+        <!-- TAB 3: TECHNOLOGY EXPERIENCE -->
         <div id="tab-panel-skills" class="tab-content hidden space-y-4">
           <div class="flex items-center justify-between pb-2 border-b border-slate-800">
             <div>
               <h2 class="font-semibold text-slate-100 flex items-center gap-2">
-                <i data-lucide="check-square" class="w-4 h-4 text-emerald-400"></i> May đo Kỹ Năng Theo JD
+                <i data-lucide="cpu" class="w-4 h-4 text-emerald-400"></i> Công nghệ & Kinh nghiệm sử dụng
               </h2>
-              <p class="text-[11px] text-slate-400 mt-0.5">Bật/tắt kỹ năng để phù hợp từ khoá hệ thống ATS của JD</p>
+              <p class="text-[11px] text-slate-400 mt-0.5">Mô tả bạn đã dùng công nghệ/công cụ nào để làm gì (VD: Python xử lý dữ liệu, FastAPI xây dựng web nhanh)</p>
             </div>
             <button onclick="addSkillCategoryModal()" class="text-xs bg-emerald-700/30 hover:bg-emerald-700/50 text-emerald-400 border border-emerald-500/30 px-2.5 py-1 rounded-md flex items-center gap-1 transition">
-              <i data-lucide="plus" class="w-3 h-3"></i> Nhóm mới
+              <i data-lucide="plus" class="w-3 h-3"></i> Thêm nhóm
             </button>
           </div>
 
           <div id="skills-container" class="space-y-4">
-            <!-- Dynamic skills groups injected by JS -->
+            <!-- Dynamic technology groups injected by JS -->
           </div>
         </div>
 
@@ -395,22 +398,22 @@
     </section>
   </main>
 
-  <!-- MODAL: ADD SKILL GROUP -->
+  <!-- MODAL: ADD TECHNOLOGY GROUP -->
   <div id="skill-modal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
     <div class="bg-slate-900 border border-slate-700 rounded-xl p-5 w-full max-w-md shadow-2xl space-y-4">
       <div class="flex justify-between items-center pb-2 border-b border-slate-800">
-        <h3 class="font-bold text-sm text-white">Thêm nhóm kỹ năng mới</h3>
+        <h3 class="font-bold text-sm text-white">Thêm nhóm công nghệ</h3>
         <button onclick="closeSkillModal()" class="text-slate-400 hover:text-white">
           <i data-lucide="x" class="w-4 h-4"></i>
         </button>
       </div>
       <div>
-        <label class="block text-xs text-slate-400 mb-1">Tên nhóm kỹ năng (ví dụ: Mobile, Cloud/Security)</label>
+        <label class="block text-xs text-slate-400 mb-1">Tên nhóm (ví dụ: Backend, AI & Data, Frontend)</label>
         <input type="text" id="modal-skill-category" placeholder="Tên nhóm..." class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white outline-none focus:border-emerald-500">
       </div>
       <div>
-        <label class="block text-xs text-slate-400 mb-1">Các kỹ năng (cách nhau bởi dấu phẩy)</label>
-        <textarea id="modal-skill-items" rows="3" placeholder="React Native, Flutter, Swift, Kotlin" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white outline-none focus:border-emerald-500 resize-none"></textarea>
+        <label class="block text-xs text-slate-400 mb-1">Công nghệ ban đầu (phân tách bằng dấu phẩy, có thể để trống)</label>
+        <textarea id="modal-skill-items" rows="3" placeholder="Python, FastAPI, PostgreSQL" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white outline-none focus:border-emerald-500 resize-none"></textarea>
       </div>
       <div class="flex justify-end gap-2 pt-2">
         <button onclick="closeSkillModal()" class="px-3 py-1.5 rounded-lg text-xs font-medium text-slate-400 hover:bg-slate-800">Hủy</button>

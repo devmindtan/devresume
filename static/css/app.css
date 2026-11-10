@@ -3,6 +3,12 @@
       width: 6px;
       height: 6px;
     }
+
+    /* Canh chỉnh icon Lucide/SVG với chữ */
+    svg.lucide {
+      display: block;
+      flex-shrink: 0;
+    }
     ::-webkit-scrollbar-track {
       background: transparent;
     }
