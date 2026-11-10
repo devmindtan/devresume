@@ -1343,22 +1343,24 @@
       if (lastLabel !== null) {
         parts.push({ label: lastLabel, content: raw.slice(lastIndex).trim() });
         const accent = (resumeData && resumeData.styling && resumeData.styling.accentColor) || "#0f766e";
-        const labelStyles = {
-          Task: "text-slate-500",
-          Action: "text-gray-900",
-          Result: "text-emerald-700"
+        const meta = {
+          Task: { label: "text-slate-500", border: "#cbd5e1", bg: "transparent" },
+          Action: { label: accent, border: accent, bg: "transparent" },
+          Result: { label: "#047857", border: "#10b981", bg: "rgba(16,185,129,0.06)" }
         };
-        return parts
+        return `<span class="block space-y-1 mt-0.5">` + parts
           .filter(part => part.content || part.label)
-          .map((part, idx) => {
+          .map((part) => {
             if (!part.label) {
-              return `<span class="${idx > 0 ? "block mt-0.5" : "block"} text-gray-700">${escapeHTML(part.content)}</span>`;
+              return `<span class="block text-gray-700 leading-relaxed">${escapeHTML(part.content)}</span>`;
             }
-            const labelClass = labelStyles[part.label] || "text-gray-800";
-            const labelStyle = part.label === "Action" ? ` style="color:${accent}"` : "";
-            return `<span class="${idx > 0 ? "block mt-0.5" : "block"} leading-relaxed"><span class="font-semibold ${labelClass}"${labelStyle}>${escapeHTML(part.label)}:</span> <span class="text-gray-700">${escapeHTML(part.content)}</span></span>`;
+            const m = meta[part.label] || { label: "#374151", border: "#d1d5db", bg: "transparent" };
+            return `<span class="block rounded-r px-2 py-0.5 leading-relaxed" style="border-left:2px solid ${m.border};background:${m.bg}">
+              <span class="font-semibold uppercase tracking-wide text-[10px]" style="color:${m.label}">${escapeHTML(part.label)}</span>
+              <span class="text-gray-700"> ${escapeHTML(part.content)}</span>
+            </span>`;
           })
-          .join("");
+          .join("") + `</span>`;
       }
 
       return `<span>${escapeHTML(raw)}</span>`;
