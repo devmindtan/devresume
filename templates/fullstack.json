@@ -169,10 +169,12 @@
       "company": "TMAI Saigon",
       "role": "Intern",
       "time": "03/2025 - 06/2025",
+      "timeFrom": "03/2025",
+      "timeTo": "06/2025",
       "location": "Ho Chi Minh City",
       "bullets": [
-        "Researched blockchain technologies and machine learning algorithms for practical application scenarios.",
-        "Developed a decentralized application (DApp) for book management using blockchain to support transparent and tamper-resistant record keeping."
+        "Task: Explore and apply blockchain and machine learning technologies for practical use cases. Action: Researched core blockchain concepts and ML algorithms, evaluated feasible application scenarios, and documented findings to support implementation decisions. Result: Built a solid technical foundation that guided the development of a blockchain-based solution.",
+        "Task: Develop a decentralized book management application. Action: Designed and implemented DApp features using blockchain to record and manage book data with transparent, tamper-resistant transactions. Result: Delivered a working prototype demonstrating secure and traceable book management workflows."
       ]
     },
     {
@@ -181,10 +183,12 @@
       "company": "Van Lang University",
       "role": "Teaching Assistant",
       "time": "09/2025 - 04/2026",
+      "timeFrom": "09/2025",
+      "timeTo": "04/2026",
       "location": "Ho Chi Minh City",
       "bullets": [
-        "Assisted instructors in teaching programming and algorithm courses using Java, C, C++, Python, and Dart.",
-        "Supported students with coding exercises, algorithm problem-solving, and implementation guidance during lab sessions."
+        "Task: Support instructors in delivering programming and algorithm courses. Action: Assisted teaching activities across Java, C, C++, Python, and Dart, prepared guidance for coding exercises, and explained key concepts during lab sessions. Result: Helped students better understand course material and complete practical programming tasks more effectively.",
+        "Task: Strengthen students' problem-solving and implementation skills. Action: Guided students through algorithm analysis, debugging, and code implementation, providing step-by-step feedback on exercises and lab work. Result: Improved students' ability to translate algorithmic ideas into correct, working code."
       ]
     }
   ],
