@@ -41,8 +41,9 @@ Mở http://127.0.0.1:8000
 | `GET /api/templates` | Danh sách template (slug, name, description, order) |
 | `GET /api/templates/{slug}` | Toàn bộ dữ liệu CV của template |
 | `POST /api/templates` | Tạo preset JD mới từ dữ liệu hiện tại và lưu thành `templates/<slug>.json` |
+| `PUT /api/templates/{slug}` | Cập nhật nội dung preset (dùng cho tự động lưu khi chỉnh sửa) |
 
-Tạo preset qua UI: bấm **Thêm Preset JD** trên thanh công cụ (lưu CV đang chỉnh, kể cả khi chưa điền nội dung). Preset mới sẽ xuất hiện trong danh sách và được lưu ngay vào thư mục `templates/`.
+Tạo preset qua UI: bấm **Thêm Preset JD** trên thanh công cụ (lưu CV đang chỉnh, kể cả khi chưa điền nội dung). Preset mới sẽ xuất hiện trong danh sách và được lưu ngay vào thư mục `templates/`. Mọi chỉnh sửa trên preset đang chọn được **tự động lưu** vào file JSON tương ứng.
 
 ## Template
 

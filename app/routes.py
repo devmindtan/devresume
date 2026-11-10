@@ -27,3 +27,11 @@ def get_template(slug: str) -> Template:
         return repository.get_template(slug)
     except repository.TemplateNotFoundError as exc:
         raise HTTPException(status_code=404, detail=f"Template '{slug}' not found") from exc
+
+
+@router.put("/templates/{slug}", response_model=Template)
+def update_template(slug: str, payload: TemplateCreate) -> Template:
+    try:
+        return repository.update_template(slug, payload)
+    except repository.TemplateNotFoundError as exc:
+        raise HTTPException(status_code=404, detail=f"Template '{slug}' not found") from exc

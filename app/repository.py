@@ -63,6 +63,15 @@ def _unique_slug(base: str) -> str:
     return slug
 
 
+def _write_template(path: Path, template: Template) -> None:
+    tmp_path = path.with_suffix(".json.tmp")
+    tmp_path.write_text(
+        json.dumps(template.model_dump(), ensure_ascii=False, indent=2) + "\n",
+        encoding="utf-8",
+    )
+    tmp_path.replace(path)
+
+
 def create_template(payload: TemplateCreate) -> Template:
     """Persist the current CV as templates/<slug>.json and return it."""
     templates = list_templates()
@@ -81,12 +90,24 @@ def create_template(payload: TemplateCreate) -> Template:
         projects=payload.projects,
         styling=payload.styling,
     )
+    _write_template(TEMPLATES_DIR / f"{slug}.json", template)
+    return template
 
-    path = TEMPLATES_DIR / f"{slug}.json"
-    tmp_path = path.with_suffix(".json.tmp")
-    tmp_path.write_text(
-        json.dumps(template.model_dump(), ensure_ascii=False, indent=2) + "\n",
-        encoding="utf-8",
+
+def update_template(slug: str, payload: TemplateCreate) -> Template:
+    """Replace the content of an existing template file."""
+    existing = get_template(slug)
+    template = Template(
+        slug=existing.slug,
+        name=payload.name or existing.name,
+        description=payload.description,
+        order=existing.order,
+        profile=payload.profile,
+        sections=payload.sections,
+        skills=payload.skills,
+        experiences=payload.experiences,
+        projects=payload.projects,
+        styling=payload.styling,
     )
-    tmp_path.replace(path)
+    _write_template(TEMPLATES_DIR / f"{slug}.json", template)
     return template

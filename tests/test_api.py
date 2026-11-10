@@ -130,3 +130,36 @@ def test_create_template_generates_unique_slug(client):
     assert second.json()["slug"] == "preset_test_2"
     assert (repository.TEMPLATES_DIR / "preset_test_2.json").is_file()
 
+
+def test_update_template_persists_changes(client):
+    original = client.get("/api/templates/fullstack").json()
+    payload = {
+        "name": original["name"],
+        "description": "Đã chỉnh sửa",
+        "profile": {**original["profile"], "fullName": "NGƯỜI DÙNG MỚI"},
+        "sections": original["sections"],
+        "skills": original["skills"],
+        "experiences": original["experiences"],
+        "projects": original["projects"],
+        "styling": original["styling"],
+    }
+
+    response = client.put("/api/templates/fullstack", json=payload)
+    assert response.status_code == 200
+    updated = response.json()
+    assert updated["slug"] == "fullstack"
+    assert updated["order"] == original["order"]
+    assert updated["profile"]["fullName"] == "NGƯỜI DÙNG MỚI"
+    assert updated["description"] == "Đã chỉnh sửa"
+
+    saved = json.loads((repository.TEMPLATES_DIR / "fullstack.json").read_text(encoding="utf-8"))
+    assert saved["profile"]["fullName"] == "NGƯỜI DÙNG MỚI"
+
+
+def test_update_unknown_template_returns_404(client):
+    response = client.put(
+        "/api/templates/does_not_exist",
+        json={"name": "X", "profile": {}, "sections": [], "skills": [], "experiences": [], "projects": [], "styling": {}},
+    )
+    assert response.status_code == 404
+
