@@ -1322,11 +1322,45 @@
       `;
     }
 
+    function formatBulletContent(text) {
+      const raw = String(text || "");
+      const labels = ["Task", "Action", "Result"];
+      const pattern = /\b(Task|Action|Result):\s*/g;
+      const parts = [];
+      let match;
+      let lastLabel = null;
+      let lastIndex = 0;
+
+      while ((match = pattern.exec(raw)) !== null) {
+        if (lastLabel !== null) {
+          parts.push({ label: lastLabel, content: raw.slice(lastIndex, match.index).trim() });
+        } else if (match.index > 0) {
+          parts.push({ label: null, content: raw.slice(0, match.index).trim() });
+        }
+        lastLabel = match[1];
+        lastIndex = pattern.lastIndex;
+      }
+
+      if (lastLabel !== null) {
+        parts.push({ label: lastLabel, content: raw.slice(lastIndex).trim() });
+        return parts
+          .filter(part => part.content || part.label)
+          .map((part, idx) => {
+            const prefix = part.label ? `<span class="font-semibold text-gray-800">${escapeHTML(part.label)}:</span> ` : "";
+            const br = idx > 0 ? "<br>" : "";
+            return `${br}${prefix}<span>${escapeHTML(part.content)}</span>`;
+          })
+          .join("");
+      }
+
+      return `<span>${escapeHTML(raw)}</span>`;
+    }
+
     function buildBulletHTML(text, extraClass = "") {
       return `
         <div class="flex gap-1.5 text-xs text-gray-700 leading-relaxed ${extraClass}">
           <span class="text-gray-400 shrink-0">•</span>
-          <span>${escapeHTML(text)}</span>
+          <span>${formatBulletContent(text)}</span>
         </div>
       `;
     }
