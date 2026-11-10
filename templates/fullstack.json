@@ -57,116 +57,106 @@
       "categoryName": "Programming Languages",
       "skills": [
         {
+          "name": "TypeScript & JavaScript",
+          "description": "Skilled in end-to-end web and mobile development with type-safe, modular code; build RESTful APIs with Node.js/Express and responsive, component-based interfaces with React/React Native.",
+          "enabled": true
+        },
+        {
           "name": "Python",
-          "description": "Researched blockchain and ML algorithms during TMAI internship; built a blockchain-based book management DApp; developed backend/data services for the Smart City traffic prediction system; and implemented local AI pipelines in Watch2Learn (transcription fallback, NLP, on-device translation).",
+          "description": "Experienced in backend service development with FastAPI, data processing, and integrating local ML/AI pipelines (on-device transcription, NLP/tokenization, and translation) for low-latency, cost-free workflows.",
           "enabled": true
         },
         {
-          "name": "JavaScript / TypeScript",
-          "description": "Developed the React/Vite dashboard and Node.js/Express APIs for the Smart City capstone, built the offline-first Muscle Exercise Manager with Expo/TypeScript, and configured the Remotion/Node.js video production workspace (video-generated).",
-          "enabled": true
-        },
-        {
-          "name": "Java, C, C++, Dart",
-          "description": "Used as primary languages while assisting algorithm and programming courses as a Teaching Assistant at Van Lang University, guiding students through problem-solving and implementation.",
+          "name": "C, C++, Java & Dart",
+          "description": "Solid foundation in data structures, algorithms, and problem-solving, reinforced through competitive programming (ICPC) and instructional support for programming/algorithm courses.",
           "enabled": false
         },
         {
           "name": "SQL",
-          "description": "Wrote queries and worked with relational schemas for application data in PostgreSQL-backed services (Smart City project) and local/cloud app storage patterns.",
-          "enabled": false
-        },
-        {
-          "name": "HTML5 / CSS3",
-          "description": "Implemented responsive web UI layouts and styling for project dashboards and web interfaces.",
+          "description": "Proficient in relational data modeling, query writing, and optimization for application and reporting workloads.",
           "enabled": false
         }
       ]
     },
     {
       "id": "frontend",
-      "categoryName": "Frontend & UI",
+      "categoryName": "Frontend & Mobile",
       "skills": [
         {
           "name": "React.js / Next.js / Vite",
-          "description": "Built the Smart City traffic monitoring and decision-support dashboard with React/Vite, integrating real-time updates and data views for forecasting, traffic, and reporting modules.",
+          "description": "Build interactive, maintainable web interfaces and dashboards with component-driven architecture, client-side state management, and performance-conscious bundling.",
           "enabled": true
         },
         {
           "name": "React Native (Expo)",
-          "description": "Developed Muscle Exercise Manager, an offline-first workout app with weekly planning, focus mode logging, nutrition/body metrics, and Google sign-in.",
+          "description": "Design offline-first mobile architectures with local SQLite persistence, resilient synchronization flows, and smooth user-focused experiences.",
           "enabled": false
         },
         {
-          "name": "Tailwind CSS",
-          "description": "Styled consistent, responsive interfaces and UI components across web projects.",
+          "name": "Tailwind CSS & HTML5/CSS3",
+          "description": "Implement responsive, consistent, and accessible UI layouts with utility-first and semantic styling practices.",
           "enabled": false
         },
         {
-          "name": "Remotion",
-          "description": "Configured and composed programmatic video scenes/assets in the video-generated workspace to support repeatable content production for the YouTube channel https://www.youtube.com/@tamly.cuocsong.",
+          "name": "Real-time UI (Socket.IO)",
+          "description": "Integrate live data streaming and event-driven updates into web interfaces for real-time monitoring experiences.",
           "enabled": false
         }
       ]
     },
     {
       "id": "backend",
-      "categoryName": "Backend, Data & AI",
+      "categoryName": "Backend, Real-Time & Databases",
       "skills": [
         {
-          "name": "Node.js (Express)",
-          "description": "Implemented backend APIs and service logic for the Smart City system (auth, cameras, models, forecast, traffic, reports, decisions) and integrated with storage and microservices.",
+          "name": "Node.js (Express) & FastAPI",
+          "description": "Implement modular backend services and RESTful APIs with clear routing, async request handling, and rapid prototyping of data/AI-oriented endpoints.",
           "enabled": true
         },
         {
-          "name": "FastAPI",
-          "description": "Used to quickly build lightweight Python web APIs for data/AI-oriented features and rapid prototyping workflows.",
-          "enabled": false
-        },
-        {
-          "name": "PostgreSQL / SQLite / Supabase",
-          "description": "Used PostgreSQL and MinIO-backed workflows in the Smart City project; implemented local SQLite storage with Supabase cloud sync in Muscle Exercise Manager and Watch2Learn.",
+          "name": "PostgreSQL & SQLite",
+          "description": "Design normalized schemas, optimize queries/indexing, and implement reliable data access patterns across server and embedded local databases.",
           "enabled": true
         },
         {
-          "name": "MinIO / FIWARE Orion / Socket.IO",
-          "description": "Integrated MinIO object storage, FIWARE Orion context broker, and Socket.IO real-time delivery in the Smart City pipeline (camera/image processing to live dashboard updates).",
+          "name": "Supabase & Sync Workflows",
+          "description": "Configure cloud-backed data synchronization and authentication-aware data flows between local clients and remote storage.",
           "enabled": false
         },
         {
-          "name": "Local AI/ML Pipelines (Whisper, OPUS-MT, NLP)",
-          "description": "Configured Watch2Learn's local-first pipeline: subtitle-first ingestion, local transcription fallback, segmentation/pinyin/dictionary enrichment, and on-device translation without paid APIs.",
+          "name": "MinIO, FIWARE Orion & Messaging",
+          "description": "Work with object storage, context-broker/event-driven patterns, and service-to-service data pipelines for distributed, real-time systems.",
           "enabled": false
         },
         {
-          "name": "Blockchain (DApp)",
-          "description": "Researched blockchain technologies at TMAI Saigon and developed a decentralized book management DApp; contributed to VERZIK's blockchain-based document verification concept and backend/containerized setup.",
+          "name": "Blockchain & DApp Development",
+          "description": "Apply blockchain concepts to build decentralized applications focused on data integrity, transparency, and tamper-resistant record management.",
           "enabled": false
         }
       ]
     },
     {
       "id": "devops",
-      "categoryName": "DevOps & Tools",
+      "categoryName": "DevOps, Tools & AI Workflows",
       "skills": [
         {
-          "name": "Docker / Docker Compose / Kubernetes",
-          "description": "Containerized services and prepared Docker Compose/Kubernetes manifests and cronjobs for the Smart City microservices system; used Docker Compose in VERZIK.",
+          "name": "Docker, Docker Compose & Kubernetes",
+          "description": "Containerize multi-service applications and define declarative deployment configurations (manifests, scheduled jobs) for reproducible environments and operations.",
           "enabled": true
         },
         {
           "name": "Git & GitHub",
-          "description": "Managed source code, project history, and collaboration across academic and personal repositories (KLTN_2026, VERZIK, muscle-exercise-manager, video-generated, watch2learn).",
+          "description": "Practice structured version control, collaborative workflows, and maintainable project/release organization across repositories.",
           "enabled": true
         },
         {
-          "name": "Linux / Bash",
-          "description": "Worked in Linux development environments and used shell tooling/scripts for local workflows, automation, and project operations.",
+          "name": "Linux & Bash",
+          "description": "Work effectively in Linux environments and use shell tooling to support development, automation, and debugging workflows.",
           "enabled": false
         },
         {
-          "name": "AI Agent & Workflow Configuration",
-          "description": "Designed structured AI-assisted workflows in video-generated and watch2learn (AGENTS rules, reusable skills, project catalog/manager, automation planning, quality checks) to make development and content production faster and more consistent.",
+          "name": "AI-Assisted Engineering & Workflow Configuration",
+          "description": "Configure structured AI-agent workflows (rules, reusable skills, automation planning, and quality checks) to accelerate development and content production while maintaining consistency and code quality.",
           "enabled": true
         }
       ]
